@@ -1,0 +1,14 @@
+# Project exclude paths
+/out/
+/repository/
+/2061dump/
+/206dump/
+/205dump/
+/204dump/
+/11.6.2014-osrs/
+/dump/
+/data/
+/olddump/
+/olderdumpdump/
+/dump/
+/repository/cache-tmp/
