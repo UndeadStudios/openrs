@@ -96,18 +96,18 @@ public class TypeListManager {
 		npc.initialize(cache);
 		obj.initialize(cache);
 		over.initialize(cache);
-		//seq.initialize(cache);
+		seq.initialize(cache);
 		spot.initialize(cache);
 		under.initialize(cache);
 		varbit.initialize(cache);
 		varc.initialize(cache);
-	//	varcstr.initialize(cache);
+		//varcstr.initialize(cache);
 		varp.initialize(cache);
 		area.initialize(cache);
 		param.initialize(cache);
 		struct.initialize(cache);
-		//hitmark.initialize(cache);
-		//hitbar.initialize(cache);
+	//	hitmark.initialize(cache);
+		hitbar.initialize(cache);
 	}
 	
 	public static final int enumSize() {
@@ -275,12 +275,12 @@ public class TypeListManager {
 		enm.print();
 		obj.print();
 		spot.print();
-		//seq.print();
+		seq.print();
 		inv.print();
 		area.print();
 		param.print();
 		struct.print();
-		hitmark.print();
+		//hitmark.print();
 		hitbar.print();
 	}
 

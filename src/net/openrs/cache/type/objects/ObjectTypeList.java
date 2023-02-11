@@ -75,6 +75,8 @@ public class ObjectTypeList implements TypeList<ObjectType> {
 				ByteBuffer buffer = archive.getEntry(child.index());
 				ObjectType type = new ObjectType(id);
 				type.decode(buffer);
+				switch(id){
+				}
 				objs[id] = type;
 				count++;
 			}

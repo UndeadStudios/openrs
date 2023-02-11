@@ -161,7 +161,19 @@ public final class ByteBufferUtils {
 		else
 			return (buf.getShort() & 0xFFFF) - 32768;
 	}
-	
+	public static int readNullableLargeSmart(ByteBuffer buf) {
+		int peek = buf.get(buf.position()) & 0xFF;
+		if (peek < 0) {
+			return buf.getInt() & Integer.MAX_VALUE;
+		} else {
+			int var1 = buf.getShort() & 0xFFFF;
+			return var1 == 32767 ? -1 : var1;
+		}
+	}
+	public static int readShortSmartSub(ByteBuffer buf) {
+		int var1 = buf.get(buf.position()) & 255;
+		return var1 < 128 ? buf.get() & 0xFF - 1 : buf.getShort() & 0xFFFF - 0x8000;
+	}
 	/**
 	 * Gets a signed smart from the buffer.
 	 * 
@@ -203,6 +215,14 @@ public final class ByteBufferUtils {
 		}
 		int shortValue = buffer.getShort() & 0xFFFF;
 		return shortValue - 32769;
+	}
+	public static int method8486(ByteBuffer buffer) {
+		int var1 = (buffer.get(buffer.position() - 1) & 255) + ((buffer.get(buffer.position() - 2) & 255) << 8);
+		if(var1 > 32767) {
+			var1 -= 65536;
+		}
+
+		return var1;
 	}
 
 	/**

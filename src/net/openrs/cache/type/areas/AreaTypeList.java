@@ -5144,6 +5144,17 @@ public class AreaTypeList implements TypeList<AreaType> {
 							type.anInt1980 = -1;
 							break;
 
+						case 870:
+							type.name = "Uzer<br>Oasis";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 871:
+							type.spriteId = 6;
+							type.anInt1980 = -1;
+							break;
+
 					}
 				}
 				count++;

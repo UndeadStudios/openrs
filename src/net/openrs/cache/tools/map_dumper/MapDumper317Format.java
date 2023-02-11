@@ -28,7 +28,7 @@ public class MapDumper317Format {
             mapDir.mkdirs();
         }
 
-        if (!XTEAManager.load(Paths.get("repository","xtea/txt").toFile())) {
+        if (!XTEAManager.load(Paths.get("repository","xtea/keys").toFile())) {
             return;
         }
 

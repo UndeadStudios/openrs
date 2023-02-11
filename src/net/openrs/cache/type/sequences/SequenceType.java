@@ -52,7 +52,7 @@ public class SequenceType implements Type {
 	private int replayMode = 2;
 	private int precedenceAnimating = -1;
 	private boolean[] unknown;
-    private Map field2174;
+    private HashMap field2174;
     private int skeletalRangeBegin = 0;
     private int skeletalRangeEnd = 0;;
     public int skeletalId = -1;
@@ -136,12 +136,12 @@ public class SequenceType implements Type {
                 this.skeletalId = buffer.getInt();
 			} else if(opcode == 15) {
 				final int count = buffer.getShort() & 0xFFFF;
-				//this.field2174 = new HashMap();
+				this.field2174 = new HashMap();
 
 				for(int var4 = 0; var4 < count; ++var4) {
 					this.skeletalsoundEffect = (buffer.getShort() & 0xFFFF);
 					this.skeletalsoundRange = ByteBufferUtils.get24Int(buffer);
-					//this.field2174.put(Integer.valueOf(skeletalsoundEffect[var4]), Integer.valueOf(skeletalsoundRange[var4]));
+					this.field2174.put(Integer.valueOf(skeletalsoundEffect), Integer.valueOf(skeletalsoundRange));
 				}
 			} else if(opcode == 16) {
 				skeletalRangeBegin = (buffer.getShort() & 0xFFFF);
@@ -262,23 +262,21 @@ public class SequenceType implements Type {
             dos.writeByte(14);
             dos.writeInt(skeletalId);
         }
-		if (skeletalsoundEffect != -1 || skeletalsoundRange != -1)  {
+		if (!field2174.isEmpty())  {
 			dos.writeByte(15);
-			dos.writeByte(skeletalsoundEffect);
-			for (int i = 0; i < skeletalsoundEffect; i++)
+			dos.writeShort(field2174.size());
+			for (int i = 0; i < field2174.size(); i++)
 				dos.writeShort(skeletalsoundEffect);
-			for (int i = 0; i < skeletalsoundRange; i++) {
 				dos.writeByte(skeletalsoundRange >> 16);
 				dos.writeByte(skeletalsoundRange >> 8);
 				dos.writeByte(skeletalsoundRange);
-			}
 		}
 		if (skeletalRangeBegin != -1 || skeletalRangeEnd != -1) {
 			dos.writeByte(16);
 			dos.writeShort(skeletalRangeBegin);
 			dos.writeShort(skeletalRangeEnd);
 		}
-		if(unknown != null){
+		if (unknown != null) {
 			dos.writeByte(17);
 			dos.writeByte(unknown.length);
 			for (int i = 0; i < unknown.length; i++){

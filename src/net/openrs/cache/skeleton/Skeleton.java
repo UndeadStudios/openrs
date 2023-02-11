@@ -180,7 +180,7 @@ public class Skeleton {
             }
         }
 
-        if (animBuf2.position() != animBuf.array().length) {
+        if (animBuf.array().length != animBuf2.position()) {
             throw new RuntimeException();
         } else {
             skeleton.anInt63 = i9;

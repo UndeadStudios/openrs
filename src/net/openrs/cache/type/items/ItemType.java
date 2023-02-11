@@ -55,6 +55,7 @@ public class ItemType implements Type {
 	private int femaleHeadModel2 = -1;
 	private int femaleModel = -1;
 	private int femaleModel1 = -1;
+	public int field2182 = 0;
 	private int femaleModel2 = -1;
 	private int femaleOffset;
 	private final int id;
@@ -75,6 +76,8 @@ public class ItemType implements Type {
 	private int resizeX = 128;
 	private int resizeY = 128;
 	private int resizeZ = 128;
+	public int field2142 = -1;
+	public int field2157 = -1;
 	private int isStackable = 0;
 	private boolean searchable;
 	private int team;
@@ -85,6 +88,7 @@ public class ItemType implements Type {
 	private int yan2d = 0;
 	private int offsetY2d = 0;
 	private int zan2d = 0;
+	public int field2158 = -1;
 	private int zoom2d = 2000;
 	private int placeHolderId = -1;
 	private int placeHolderTemplate = -1;
@@ -126,11 +130,15 @@ public class ItemType implements Type {
 					this.offsetY2d -= 65536;
 				}
 			} else if (opcode == 9) {
-					unknown1 = ByteBufferUtils.emcodeStringCp1252(buffer);
+				ByteBufferUtils.emcodeStringCp1252(buffer);
 			} else if (opcode == 11) {
 				this.isStackable = 1;
 			} else if (opcode == 12) {
 				this.cost = buffer.getInt();
+			} else if(opcode == 13) {
+				this.field2142 = buffer.get() & 0xFF;
+			} else if(opcode == 14) {
+				this.field2157 = buffer.get() & 0xFF;
 			} else if (opcode == 16) {
 				this.isMembers = true;
 			} else if (opcode == 23) {
@@ -143,6 +151,8 @@ public class ItemType implements Type {
 				this.femaleOffset = buffer.get() & 0xFF;
 			} else if (opcode == 26) {
 				this.femaleModel1 = buffer.getShort() & 0xFFFF;
+			} else if(opcode == 27) {
+				this.field2158 = buffer.get() & 0xFF;
 			} else if (opcode >= 30 && opcode < 35) {
 				this.groundActions[opcode - 30] = ByteBufferUtils.emcodeStringCp1252(buffer);
 				if (this.groundActions[opcode - 30].equalsIgnoreCase("Hidden")) {
@@ -175,6 +185,8 @@ public class ItemType implements Type {
 					this.shiftClickIndex = buffer.get();
 				} else if (opcode == 65) {
 					this.searchable = true;
+				} else if(opcode == 75) {
+					this.field2182 = buffer.getShort();
 				} else if (opcode == 78) {
 					this.maleModel2 = buffer.getShort() & 0xFFFF;
 				} else if (opcode == 79) {
@@ -291,7 +303,14 @@ public class ItemType implements Type {
 			dos.writeByte(12);
 			dos.writeInt(cost);
 		}
-
+		if (field2142 != 1) {
+			dos.writeByte(13);
+			dos.writeByte(field2142);
+		}
+		if (field2157 != 1) {
+			dos.writeByte(14);
+			dos.writeByte(field2157);
+		}
 		if (isMembers) {
 			dos.writeByte(16);
 		}
@@ -317,7 +336,10 @@ public class ItemType implements Type {
 			dos.writeByte(26);
 			dos.writeShort(femaleModel1);
 		}
-
+		if (field2158 != 1) {
+			dos.writeByte(27);
+			dos.writeByte(field2158);
+		}
 		if (!ArrayUtils.arraysMatch(groundActions, DEFAULT_GROUND_ACTIONS)) {
 			for (int i = 0; i < groundActions.length; i++) {
 				if (groundActions[i] == null) {
@@ -371,7 +393,10 @@ public class ItemType implements Type {
 		if (searchable) {
 			dos.writeByte(65);
 		}
-
+		if (field2182 != -1) {
+			dos.writeByte(75);
+			dos.writeShort(field2182);
+		}
 		if (maleModel2 != -1) {
 			dos.writeByte(78);
 			dos.writeShort(maleModel2);

@@ -7,10 +7,10 @@
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,7 +24,6 @@ package net.openrs.cache.type.npcs;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +34,7 @@ import net.openrs.util.ByteBufferUtils;
 
 /**
  * @author Kyle Friz
- * 
+ *
  * @since May 26, 2015
  */
 public class NpcType implements Type {
@@ -44,10 +43,13 @@ public class NpcType implements Type {
 	private short[] colorToReplace;
 	private int rotation = 32;
 	public String name;
+	int[] headIconArchiveIds = null;
+	short[] headIconSpriteIndex = null;
 	private String SGS = "null";
 	private short[] colorToReplaceWith;
 	public int[] models;
 	public int[] models_2;
+	static boolean field4275;
 	private int stanceAnimation = -1;
 	private int anInt2165 = -1;
 	private int tileSpacesOccupied = -1;
@@ -83,168 +85,196 @@ public class NpcType implements Type {
 	public int field1933 = -1;
 	public int field1922 = -1;
 	public int field1923 = -1;
+	private boolean is210 = true;
+	public int archiveRevision = 1;
+	public int REV_210_NPC_ARCHIVE_REV = 1493;
+
+
 	public NpcType(int id) {
 		this.id = id;
 	}
 
 	@Override
 	public void decode(ByteBuffer buffer) {
-		while (true) {
-			final int opcode = buffer.get() & 0xFF;
+			while (true) {
+				final int opcode = buffer.get() & 0xFF;
 
-			if (opcode == 0) {
-				return;
-			} else if (opcode == 1) {
-				int length = buffer.get() & 0xFF;
-				models = new int[length];
+				if (opcode == 0) {
+					return;
+				} else if (opcode == 1) {
+					int length = buffer.get() & 0xFF;
+					models = new int[length];
 
-				for (int idx = 0; idx < length; ++idx) {
-					models[idx] = buffer.getShort() & 0xFFFF;
-				}
-
-			} else if (opcode == 2) {
-				name = ByteBufferUtils.getString(buffer);
-			} else if (opcode == 12) {
-				tileSpacesOccupied = buffer.get() & 0xFF;
-			} else if (opcode == 13) {
-				stanceAnimation = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 14) {
-				walkAnimation = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 15) {
-				anInt2165 = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 16) {
-				anInt2189 = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 17) {
-				walkAnimation = buffer.getShort() & 0xFFFF;
-				rotate180Animation = buffer.getShort() & 0xFFFF;
-				rotate90RightAnimation = buffer.getShort() & 0xFFFF;
-				rotate90LeftAnimation = buffer.getShort() & 0xFFFF;
-			} else if(opcode == 18) {
-				opcode18 = buffer.getShort() & 0xFFFF;
-			} else if (opcode >= 30 && opcode < 35) {
-				actions[opcode - 30] = ByteBufferUtils.getString(buffer);
-				if (actions[opcode - 30].equalsIgnoreCase("Hidden")) {
-					actions[opcode - 30] = null;
-				}
-			} else if (opcode == 40) {
-				int length = buffer.get() & 0xFF;
-				colorToReplace = new short[length];
-				colorToReplaceWith = new short[length];
-
-				for (int i = 0; i < length; ++i) {
-					colorToReplace[i] = (short) (buffer.getShort() & 0xFFFF);
-					colorToReplaceWith[i] = (short) (buffer.getShort() & 0xFFFF);
-				}
-
-			} else if (opcode == 41) {
-				int length = buffer.get() & 0xFF;
-				textureToReplace = new short[length];
-				textureToReplaceWith = new short[length];
-
-				for (int i = 0; i < length; ++i) {
-					textureToReplace[i] = (short) (buffer.getShort() & 0xFFFF);
-					textureToReplaceWith[i] = (short) (buffer.getShort() & 0xFFFF);
-				}
-
-			} else if (opcode == 60) {
-				int length = buffer.get() & 0xFF;
-				models_2 = new int[length];
-
-				for (int idx = 0; idx < length; ++idx) {
-					models_2[idx] = buffer.getShort() & 0xFFFF;
-				}
-
-			} else if (opcode == 93) {
-				renderOnMinimap = false;
-			} else if (opcode == 95) {
-				combatLevel = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 97) {
-				resizeX = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 98) {
-				resizeY = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 99) {
-				visible = true;
-			} else if (100 == opcode) {
-				ambient = buffer.get();
-			} else if (101 == opcode) {
-				contrast = buffer.get();
-			} else if (opcode == 102) {
-				headIcon = buffer.getShort() & 0xFFFF;
-			} else if (103 == opcode) {
-				rotation = buffer.getShort() & 0xFFFF;
-			} else if (opcode == 106 || opcode == 118) {
-				varpId = buffer.getShort() & 0xFFFF;
-				if (0xFFFF == varpId) {
-					varpId = -1;
-				}
-
-				varp32Id = buffer.getShort() & 0xFFFF;
-				if (0xFFFF == varp32Id) {
-					varp32Id = -1;
-				}
-
-				int var = -1;
-
-				if (opcode == 118) {
-					var = buffer.getShort() & 0xFFFF;
-
-					if (var == 0xFFFF) {
-						var = -1;
-					}
-				}
-
-				int length = buffer.get() & 0xFF;
-				configs = new int[length + 2];
-
-				for (int idx = 0; idx <= length; ++idx) {
-					configs[idx] = buffer.getShort() & 0xFFFF;
-					if (configs[idx] == 0xFFFF) {
-						configs[idx] = -1;
-					}
-				}
-
-				configs[length + 1] = var;
-			} else if (107 == opcode) {
-				aBool107 = false;
-			} else if (opcode == 109) {
-				isClickable = false;
-			} else if (opcode == 111) {
-				aBool2190 = true;
-			} else if (opcode == 114){
-				field1914 = (buffer.getShort() & 0xFFFF);
-			} else if (opcode == 115){
-				field1914 = (buffer.getShort() & 0xFFFF);
-				field1919 = (buffer.getShort() & 0xFFFF);
-				field1918 = (buffer.getShort() & 0xFFFF);
-				field1938 = (buffer.getShort() & 0xFFFF);
-			} else if (opcode == 116){
-				field1920 = (buffer.getShort() & 0xFFFF);
-			} else if (opcode == 117){
-				field1920 = (buffer.getShort() & 0xFFFF);
-				field1933 = (buffer.getShort() & 0xFFFF);
-				field1922 = (buffer.getShort() & 0xFFFF);
-				field1923 = (buffer.getShort() & 0xFFFF);
-			} else if (opcode == 249) {
-				int length = buffer.get() & 0xFF;
-
-				params = new HashMap<>(BitUtils.nextPowerOfTwo(length));
-				for (int i = 0; i < length; i++) {
-					boolean isString = (buffer.get() & 0xFF) == 1;
-					int key = ByteBufferUtils.get24Int(buffer);
-					Object value;
-
-					if (isString) {
-						value = ByteBufferUtils.getString(buffer);
+					for (int idx = 0; idx < length; ++idx) {
+						models[idx] = buffer.getShort() & 0xFFFF;
 					}
 
-					else {
-						value = buffer.getInt();
+				} else if (opcode == 2) {
+					name = ByteBufferUtils.getString(buffer);
+				} else if (opcode == 12) {
+					tileSpacesOccupied = buffer.get() & 0xFF;
+				} else if (opcode == 13) {
+					stanceAnimation = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 14) {
+					walkAnimation = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 15) {
+					anInt2165 = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 16) {
+					anInt2189 = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 17) {
+					walkAnimation = buffer.getShort() & 0xFFFF;
+					rotate180Animation = buffer.getShort() & 0xFFFF;
+					rotate90RightAnimation = buffer.getShort() & 0xFFFF;
+					rotate90LeftAnimation = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 18) {
+					opcode18 = buffer.getShort() & 0xFFFF;
+				} else if (opcode >= 30 && opcode < 35) {
+					actions[opcode - 30] = ByteBufferUtils.getString(buffer);
+					if (actions[opcode - 30].equalsIgnoreCase("Hidden")) {
+						actions[opcode - 30] = null;
+					}
+				} else if (opcode == 40) {
+					int length = buffer.get() & 0xFF;
+					colorToReplace = new short[length];
+					colorToReplaceWith = new short[length];
+
+					for (int i = 0; i < length; ++i) {
+						colorToReplace[i] = (short) (buffer.getShort() & 0xFFFF);
+						colorToReplaceWith[i] = (short) (buffer.getShort() & 0xFFFF);
 					}
 
-					params.put(key, value);
+				} else if (opcode == 41) {
+					int length = buffer.get() & 0xFF;
+					textureToReplace = new short[length];
+					textureToReplaceWith = new short[length];
+
+					for (int i = 0; i < length; ++i) {
+						textureToReplace[i] = (short) (buffer.getShort() & 0xFFFF);
+						textureToReplaceWith[i] = (short) (buffer.getShort() & 0xFFFF);
+					}
+
+				} else if (opcode == 60) {
+					int length = buffer.get() & 0xFF;
+					models_2 = new int[length];
+
+					for (int idx = 0; idx < length; ++idx) {
+						models_2[idx] = buffer.getShort() & 0xFFFF;
+					}
+
+				} else if (opcode == 93) {
+					renderOnMinimap = false;
+				} else if (opcode == 95) {
+					combatLevel = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 97) {
+					resizeX = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 98) {
+					resizeY = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 99) {
+					visible = true;
+				} else if (100 == opcode) {
+					ambient = buffer.get();
+				} else if (101 == opcode) {
+					contrast = buffer.get();
+				} else if (opcode == 102) {
+					if (archiveRevision >= REV_210_NPC_ARCHIVE_REV) {
+						headIconArchiveIds = new int[1];
+						headIconSpriteIndex = new short[1];
+						headIconArchiveIds[0] = headIcon;
+						headIconSpriteIndex[0] = (short) (buffer.getShort() & 0xFFFF);
+					} else{
+						int var3 = buffer.get() & 0xFF;
+						int var4 = 0;
+
+						for (int var5 = var3; var5 != 0; var5 >>= 1) {
+							++var4;
+						}
+
+						headIconArchiveIds = new int[var4];
+						headIconSpriteIndex = new short[var4];
+
+						for (int var6 = 0; var6 < var4; ++var6) {
+							if ((var3 & 1 << var6) == 0) {
+								headIconArchiveIds[var6] = -1;
+								headIconSpriteIndex[var6] = -1;
+							} else {
+								headIconArchiveIds[var6] = ByteBufferUtils.readNullableLargeSmart(buffer);
+								headIconSpriteIndex[var6] = (short) ByteBufferUtils.readShortSmartSub(buffer);
+							}
+						}
+					}
+				} else if (103 == opcode) {
+					rotation = buffer.getShort() & 0xFFFF;
+				} else if (opcode == 106 || opcode == 118) {
+					varpId = buffer.getShort() & 0xFFFF;
+					if (0xFFFF == varpId) {
+						varpId = -1;
+					}
+
+					varp32Id = buffer.getShort() & 0xFFFF;
+					if (0xFFFF == varp32Id) {
+						varp32Id = -1;
+					}
+
+					int var = -1;
+
+					if (opcode == 118) {
+						var = buffer.getShort() & 0xFFFF;
+
+						if (var == 0xFFFF) {
+							var = -1;
+						}
+					}
+
+					int length = buffer.get() & 0xFF;
+					configs = new int[length + 2];
+
+					for (int idx = 0; idx <= length; ++idx) {
+						configs[idx] = buffer.getShort() & 0xFFFF;
+						if (configs[idx] == 0xFFFF) {
+							configs[idx] = -1;
+						}
+					}
+
+					configs[length + 1] = var;
+				} else if (107 == opcode) {
+					aBool107 = false;
+				} else if (opcode == 109) {
+					isClickable = false;
+				} else if (opcode == 111) {
+					aBool2190 = true;
+				} else if (opcode == 114) {
+					field1914 = (buffer.getShort() & 0xFFFF);
+				} else if (opcode == 115) {
+					field1914 = (buffer.getShort() & 0xFFFF);
+					field1919 = (buffer.getShort() & 0xFFFF);
+					field1918 = (buffer.getShort() & 0xFFFF);
+					field1938 = (buffer.getShort() & 0xFFFF);
+				} else if (opcode == 116) {
+					field1920 = (buffer.getShort() & 0xFFFF);
+				} else if (opcode == 117) {
+					field1920 = (buffer.getShort() & 0xFFFF);
+					field1933 = (buffer.getShort() & 0xFFFF);
+					field1922 = (buffer.getShort() & 0xFFFF);
+					field1923 = (buffer.getShort() & 0xFFFF);
+				} else if (opcode == 249) {
+					int length = buffer.get() & 0xFF;
+
+					params = new HashMap<>(BitUtils.nextPowerOfTwo(length));
+					for (int i = 0; i < length; i++) {
+						boolean isString = (buffer.get() & 0xFF) == 1;
+						int key = ByteBufferUtils.get24Int(buffer);
+						Object value;
+
+						if (isString) {
+							value = ByteBufferUtils.getString(buffer);
+						} else {
+							value = buffer.getInt();
+						}
+
+						params.put(key, value);
+					}
 				}
 			}
-		}
 	}
 
 	@Override
@@ -376,9 +406,15 @@ public class NpcType implements Type {
 				dos.writeByte(contrast);
 			}
 
-			if (headIcon != -1) {
+			if (headIconArchiveIds != null && headIconSpriteIndex != null) {
 				dos.writeByte(102);
-				dos.writeShort(headIcon);
+				dos.writeByte(headIconArchiveIds.length);
+
+				for (int i = 0; i < headIconArchiveIds.length; i++) {
+					dos.writeShort(headIconArchiveIds[i]);
+					dos.writeShort(headIconSpriteIndex[i]);
+				}
+
 			}
 
 			if (rotation != 32) {

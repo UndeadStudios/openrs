@@ -532,7 +532,6 @@ public class ObjectType implements Type {
 			for (int i = 0; i <= morphisms.length - 2; i++) {
 				dos.writeShort(morphisms[i]);
 			}
-
 		}
 	}
 

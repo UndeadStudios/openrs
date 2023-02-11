@@ -54,7 +54,6 @@ public class Archive {
 		/* read the number of chunks at the end of the archive */
 		buffer.position(buffer.limit() - 1);
 		int chunks = buffer.get() & 0xFF;
-
 		try {
 			buffer.position(buffer.limit() - 1 - chunks * size * 4);
 		} catch (IllegalArgumentException iae) {
@@ -73,14 +72,14 @@ public class Archive {
 			int chunkSize = 0;
 			for (int id = 0; id < size; id++) {
 				/* read the delta-encoded chunk length */
-				int delta = buffer.getInt();
-				chunkSize += delta;
+					int delta = buffer.getInt();
+					chunkSize += delta;
 
-				/* store the size of this chunk */
-				chunkSizes[chunk][id] = chunkSize;
+					/* store the size of this chunk */
+					chunkSizes[chunk][id] = chunkSize;
 
-				/* and add it to the size of the whole file */
-				filesSize[id] += chunkSize;
+					/* and add it to the size of the whole file */
+					filesSize[id] += chunkSize;
 			}
 		}
 
@@ -95,22 +94,22 @@ public class Archive {
 
 		/* read the data into the buffers */
 		buffer.position(0);
-		for (int chunk = 0; chunk < chunks; chunk++) {
-			for (int id = 0; id < size; id++) {
-				/* get the length of this chunk */
-				int chunkSize = chunkSizes[chunk][id];
+			for (int chunk = 0; chunk < chunks; chunk++) {
+				for (int id = 0; id < size; id++) {
+					/* get the length of this chunk */
+					int chunkSize = chunkSizes[chunk][id];
 
-				/* copy this chunk into a temporary buffer */
+					/* copy this chunk into a temporary buffer */
 					byte[] temp = new byte[chunkSize];
-				if (buffer.remaining() < temp.length) {
-					return null;
-				}
-				
-				buffer.get(temp);
+					if (buffer.remaining() < temp.length) {
+						return null;
+					}
 
-				/* copy the temporary buffer into the file buffer */
-				archive.entries[id].put(temp);
-			}
+					buffer.get(temp);
+
+					/* copy the temporary buffer into the file buffer */
+					archive.entries[id].put(temp);
+				}
 		}
 
 		/* flip all of the buffers */

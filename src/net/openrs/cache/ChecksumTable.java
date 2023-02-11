@@ -154,7 +154,7 @@ public class ChecksumTable {
 		/**
 		 * The version of the reference table.
 		 */
-		private final int version;
+		private static int version;
 
 		/**
 		 * The number of files contained within the index.
@@ -186,7 +186,7 @@ public class ChecksumTable {
 				throw new IllegalArgumentException();
 
 			this.crc = crc;
-			this.version = version;
+			Entry.version = version;
 			this.files = fileCount;
 			this.size = size;
 			this.whirlpool = whirlpool;
@@ -206,7 +206,7 @@ public class ChecksumTable {
 		 * 
 		 * @return The version.
 		 */
-		public int getVersion() {
+		public static int getVersion() {
 			return version;
 		}
 

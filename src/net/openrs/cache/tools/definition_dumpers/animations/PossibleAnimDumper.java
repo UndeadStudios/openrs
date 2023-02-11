@@ -18,7 +18,7 @@ import com.google.gson.stream.JsonWriter;
 
 public class PossibleAnimDumper {
 	
-	public static final String EXPORT = "D:/dump/PossibleanimsNoHumanoid207.json";
+	public static final String EXPORT = "D:/dump/PossibleanimsNoHumanoid208.json";
 	
 	public static final String LISTFILE = "D:/dump/types/sequences.txt";
 	public static final String NPCFILE = "D:/dump/types/npcs.txt";
@@ -91,7 +91,7 @@ public class PossibleAnimDumper {
 			    	line = line.replace("};", "");
 			    	String[] frameIds = line.split(",");
 			    	for (String frame : frameIds) {
-				    	anim.frameIds.add(Integer.parseInt(frame.trim()));
+							anim.frameIds.add(Integer.parseInt(frame.trim()));
 			    	}
 			    } else if(line.contains("type.forcedPriority") || line.contains("type.priority")) {
 			    	line = line.replace("type.priority = ", "");
