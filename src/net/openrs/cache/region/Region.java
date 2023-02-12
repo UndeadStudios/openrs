@@ -40,10 +40,10 @@ public class Region {
 
 	private final int[][][] tileHeights = new int[4][104][104];
 	private final byte[][][] renderRules = new byte[4][104][104];
-	private final byte[][][] overlayIds = new byte[4][104][104];
+	private final short[][][] overlayIds = new short[4][104][104];
 	private final byte[][][] overlayPaths = new byte[4][104][104];
 	private final byte[][][] overlayRotations = new byte[4][104][104];
-	private final byte[][][] underlayIds = new byte[4][104][104];
+	private final short[][][] underlayIds = new short[4][104][104];
 	
 	private final List<Location> locations = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class Region {
 			for (int x = 0; x < 64; x++) {
 				for (int y = 0; y < 64; y++) {
 					while (true) {
-						int attribute = buf.get() & 0xFF;
+						int attribute = buf.getShort() & 0xFFFF;
 						if (attribute == 0) {
 							if (z == 0) {
 								//TODO Verify the height calculation was correctly ripped from client
@@ -85,13 +85,13 @@ public class Region {
 
 							break;
 						} else if (attribute <= 49) {
-							overlayIds[z][x][y] = buf.get();
+							overlayIds[z][x][y] = (short) (buf.getShort() & 0xFFFF);
 							overlayPaths[z][x][y] = (byte) ((attribute - 2) / 4);
 							overlayRotations[z][x][y] = (byte) (attribute - 2 & 0x3);
 						} else if (attribute <= 81) {
 							renderRules[z][x][y] = (byte) (attribute - 49);
 						} else {
-							underlayIds[z][x][y] = (byte) (attribute - 81);
+							underlayIds[z][x][y] = (short) (attribute - 81);
 						}
 					}
 				}
@@ -115,7 +115,7 @@ public class Region {
 			int position = 0;
 			int positionOffset;
 
-			while ((positionOffset = ByteBufferUtils.getUnsignedSmart(buf)) != 0) {
+			while ((positionOffset = ByteBufferUtils.readShortSmartSub(buf)) != 0) {
 				position += positionOffset - 1;
 
 				int localY = position & 0x3F;

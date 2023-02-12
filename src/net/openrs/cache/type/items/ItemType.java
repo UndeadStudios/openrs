@@ -369,8 +369,8 @@ public class ItemType implements Type {
 			dos.writeByte(len);
 
 			for (int i = 0; i < len; i++) {
-				dos.writeShort(colorToReplaceWith[i]);
 				dos.writeShort(colorToReplace[i]);
+				dos.writeShort(colorToReplaceWith[i]);
 			}
 		}
 

@@ -170,9 +170,13 @@ public final class ByteBufferUtils {
 			return var1 == 32767 ? -1 : var1;
 		}
 	}
+	public static int readLargeSmart(ByteBuffer buf) {
+		return buf.get(buf.position()) < 0 ? buf.getInt() & Integer.MAX_VALUE : buf.getShort() & 0xFFFF;
+	}
+
 	public static int readShortSmartSub(ByteBuffer buf) {
 		int var1 = buf.get(buf.position()) & 255;
-		return var1 < 128 ? buf.get() & 0xFF - 1 : buf.getShort() & 0xFFFF - 0x8000;
+		return var1 < 128 ? (buf.get() & 0xFF) - 1 : (buf.getShort() & 0xFFFF) - 0x8000;
 	}
 	/**
 	 * Gets a signed smart from the buffer.

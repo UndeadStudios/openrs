@@ -80,6 +80,7 @@ public class Archive {
 
 					/* and add it to the size of the whole file */
 					filesSize[id] += chunkSize;
+
 			}
 		}
 
