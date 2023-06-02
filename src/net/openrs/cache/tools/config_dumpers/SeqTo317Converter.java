@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import net.openrs.cache.Cache;
 import net.openrs.cache.Constants;
 import net.openrs.cache.FileStore;
-import net.openrs.cache.type.sequences.SequenceType;
 import net.openrs.cache.type.sequences.SequenceTypeList;
 
 public class SeqTo317Converter {
