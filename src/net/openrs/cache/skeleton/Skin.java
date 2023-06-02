@@ -54,6 +54,12 @@ public class Skin {
                 skin.skinList[i][j] = buffer.get() & 0xFF;
             }
         }
+        if(buffer.capacity() < buffer.position()) {
+            int var4 = buffer.getShort() & 0xFFFF;
+            if(var4 > 0) {
+                //this.field2541 = new class219(var3, var4);
+            }
+        }
         return skin;
     }
 

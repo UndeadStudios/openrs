@@ -1,8 +1,6 @@
 package net.openrs.cache.tools.config_dumpers;
 
-import net.openrs.cache.Cache;
-import net.openrs.cache.Constants;
-import net.openrs.cache.FileStore;
+import net.openrs.cache.*;
 import net.openrs.cache.type.areas.AreaType;
 import net.openrs.cache.type.areas.AreaTypeList;
 import net.openrs.cache.type.items.ItemType;
@@ -16,7 +14,7 @@ import java.io.IOException;
 public class AreaDefinitionTo317Dumper {
 
     public static void main(String[] args) throws IOException {
-        File dir = new File("D:/dump");
+        File dir = new File("D:/"+Constants.Verison_number+"dump");
 
         if (!dir.exists()) {
             dir.mkdirs();

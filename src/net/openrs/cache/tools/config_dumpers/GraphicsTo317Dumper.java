@@ -15,7 +15,7 @@ public class GraphicsTo317Dumper {
 
     public static void main(String[] args) {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            File dir = new File("D:/dump");
+            File dir = new File("D:/"+Constants.Verison_number+"dump");
 
             if (!dir.exists()) {
                 dir.mkdirs();

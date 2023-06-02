@@ -15,7 +15,7 @@ public class AnimationDumper {
 
     public static void main(String[] args) throws Exception {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            final File dir = new File("D:/dump/index2/");
+            final File dir = new File("D:/"+Constants.Verison_number+"dump/index2/");
 
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -87,19 +87,19 @@ public class AnimationDumper {
             final Skin skin = Skin.decode(skinBuffer);
 
             if (!headerPacked) {
-                dos.writeShort(skin.count);
+                dos.writeByte(skin.count);
 
                 for (int i = 0; i < skin.count; ++i) {
-                    dos.writeShort(skin.transformationTypes[i]);
+                    dos.writeByte(skin.transformationTypes[i]);
                 }
 
                 for (int i = 0; i < skin.count; ++i) {
-                    dos.writeShort(skin.skinList[i].length);
+                    dos.writeByte(skin.skinList[i].length);
                 }
 
                 for (int i = 0; i < skin.count; ++i) {
                     for (int j = 0; j < skin.skinList[i].length; ++j) {
-                        dos.writeShort(skin.skinList[i][j]);
+                        dos.writeByte(skin.skinList[i][j]);
                     }
                 }
 

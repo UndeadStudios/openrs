@@ -35,11 +35,12 @@ public final class Constants {
 	public static final String SPRITE_PATH = "D:/dump/sprites/";
 	public static final String MAP_PATH = "./repository/maps/";
 	public static final String XTABLE_PATH = "./repository/xtea/tables/";
-	public static final String XMAP_PATH = "./repository/xtea/keys/";
+	public static final String XMAP_PATH = "./repository/xtea/txt/";
 	public static final String TYPE_PATH = "D:/dump/types/";
 	public static final String TRACK1_PATH = "./repository/songs/track1/";	
 	public static final String TRACK2_PATH = "./repository/songs/track2/";
 	public static final String WIKI_PATH = "./repository/wiki/";
 	public static final String ITEMS_TXT_FILE_PATH = "./repository/types/items.txt";
     public static String TEXTURE_PATH = "D:/dump/textures/";
+	public static int Verison_number = 214;
 }

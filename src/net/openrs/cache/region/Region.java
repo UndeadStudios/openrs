@@ -109,13 +109,13 @@ public class Region {
 		int id = -1;
 		int idOffset;
 
-		while ((idOffset = ByteBufferUtils.getUnsignedSmart(buf)) != 0) {
+		while ((idOffset = ByteBufferUtils.method9178(buf)) != 0) {
 			id += idOffset;
 
 			int position = 0;
 			int positionOffset;
 
-			while ((positionOffset = ByteBufferUtils.readShortSmartSub(buf)) != 0) {
+			while ((positionOffset = ByteBufferUtils.readUShortSmart(buf)) != 0) {
 				position += positionOffset - 1;
 
 				int localY = position & 0x3F;
@@ -170,7 +170,7 @@ public class Region {
 	 * @return the overlayIds
 	 */
 	public final int getOverlayId(final int z, final int x, final int y) {
-		return overlayIds[z][x][y] & 0xFF;
+		return overlayIds[z][x][y] & 0xFFFF;
 	}
 
 	/**
@@ -191,7 +191,7 @@ public class Region {
 	 * @return the underlayIds
 	 */
 	public final int getUnderlayId(final int z, final int x, final int y) {
-		return underlayIds[z][x][y] & 0xFF;
+		return underlayIds[z][x][y] & 0xFFFF;
 	}
 	
 	/**

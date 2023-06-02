@@ -134,7 +134,7 @@ public class ReferenceTable {
 		/**
 		 * The version of this entry.
 		 */
-		private int version;
+		private static int version;
 
 		/**
 		 * The cache index of this entry
@@ -210,7 +210,7 @@ public class ReferenceTable {
 		 * 
 		 * @return The version.
 		 */
-		public int getVersion() {
+		public static int getVersion() {
 			return version;
 		}
 
@@ -371,6 +371,7 @@ public class ReferenceTable {
 		}
 		if (table.format >= 6) {
 			table.version = buffer.getInt();
+			System.out.println("Verison: "+table.version);
 		}
 		
 		table.flags = buffer.get() & 0xFF;

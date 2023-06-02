@@ -40,7 +40,7 @@ import net.openrs.cache.util.CompressionUtils;
 public class ModelDumper {
 
 	public static void main(String[] args) throws IOException {
-		File dir = new File("D:/dump/index1/");
+		File dir = new File("D:/"+Constants.Verison_number+"dump/index1/");
 		
 		if (!dir.exists()) {
 			dir.mkdirs();

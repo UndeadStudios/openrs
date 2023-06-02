@@ -13,7 +13,7 @@ import net.openrs.cache.type.sequences.SequenceTypeList;
 public class SeqTo317Converter {
 
     public static void main(String[] args) throws Exception {
-        File dir = new File("D:/dump");
+        File dir = new File("D:/"+Constants.Verison_number+"dump");
 
         if (!dir.exists()) {
             dir.mkdirs();

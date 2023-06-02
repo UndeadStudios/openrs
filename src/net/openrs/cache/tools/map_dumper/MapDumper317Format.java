@@ -16,19 +16,19 @@ import java.nio.file.Paths;
 public class MapDumper317Format {
 
     public static void main(String[] args) throws IOException {
-        File dir = new File("D:/dump/");
+        File dir = new File("D:/"+Constants.Verison_number+"dump/");
 
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
-        File mapDir = new File("D:/dump/index4/");
+        File mapDir = new File("D:/"+Constants.Verison_number+"dump/index4/");
 
         if (!mapDir.exists()) {
             mapDir.mkdirs();
         }
 
-        if (!XTEAManager.load(Paths.get("repository","xtea/keys").toFile())) {
+        if (!XTEAManager.load(Paths.get("repository","xtea/txt").toFile())) {
             return;
         }
 
@@ -67,7 +67,7 @@ public class MapDumper317Format {
 
             for (int i = 0; i < MAX_REGION; i++) {
                 int[] keys = XTEAManager.lookup(i);
-                int x = i >> 8;
+                int x = i >> 8 & 255;
                 int y = i & 0xFF;
                 int map = cache.getFileId(5, "m" + x + "_" + y);
                 int land = cache.getFileId(5, "l" + x + "_" + y);
