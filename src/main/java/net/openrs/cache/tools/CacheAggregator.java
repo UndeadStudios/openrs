@@ -25,8 +25,8 @@ public final class CacheAggregator {
 
 					if (isRepackingRequired(cache, entry, type, file)) {
 						Entry otherEntry = otherTable.getEntry(file);
-						if (entry.getVersion() == otherEntry.getVersion() && entry.getCrc() == otherEntry.getCrc()) {
-							cache.getStore().write(type, file, otherCache.getStore().read(type, file));
+						if (entry.getVersion() == otherEntry.getVersion() && entry.crc == otherEntry.crc) {
+							cache.store.write(type, file, otherCache.store.read(type, file));
 						}
 					}
 				}
@@ -37,7 +37,7 @@ public final class CacheAggregator {
 	private static boolean isRepackingRequired(Cache store, Entry entry, int type, int file) {
 		ByteBuffer buffer;
 		try {
-			buffer = store.getStore().read(type, file);
+			buffer = store.store.read(type, file);
 		} catch (IOException ex) {
 			return true;
 		}
@@ -54,7 +54,7 @@ public final class CacheAggregator {
 		CRC32 crc = new CRC32();
 		crc.update(bytes, 0, bytes.length);
 
-		if ((int) crc.getValue() != entry.getCrc()) {
+		if ((int) crc.getValue() != entry.crc) {
 			return true;
 		}
 

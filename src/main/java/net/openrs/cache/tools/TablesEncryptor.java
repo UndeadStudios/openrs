@@ -42,7 +42,7 @@ public class TablesEncryptor {
 	public static void main(String[] args) {
 		try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
 			for (int type = 0; type < cache.getTypeCount(); type++) {
-				ByteBuffer buf = cache.getStore().read(255, type);
+				ByteBuffer buf = cache.store.read(255, type);
 				if (buf != null && buf.limit() > 0) {
 					BufferedWriter writer = new BufferedWriter(new FileWriter(new File(Constants.XTABLE_PATH, type + ".txt")));
 					SecureRandom random = new SecureRandom();
@@ -58,7 +58,7 @@ public class TablesEncryptor {
 					
 					Container container = Container.decode(buf);
 					ByteBuffer buffer = container.encode(keys);
-					cache.getStore().write(255, type, buffer);
+					cache.store.write(255, type, buffer);
 				}
 			}
 			

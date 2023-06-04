@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/openrs.iml" filepath="$PROJECT_DIR$/.idea/openrs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/OpenRs_Data_Dumper.main.iml" filepath="$PROJECT_DIR$/.idea/modules/OpenRs_Data_Dumper.main.iml" />
     </modules>
   </component>
 </project>

@@ -14,9 +14,9 @@ public final class CacheDefragmenter {
 		try (Cache in = new Cache(FileStore.open(Constants.CACHE_PATH));
 				Cache out = new Cache(FileStore.create(Constants.CACHETMP_PATH, in.getTypeCount()))) {
 			for (int type = 0; type < in.getTypeCount(); type++) {
-				ByteBuffer buf = in.getStore().read(255, type);
+				ByteBuffer buf = in.store.read(255, type);
 				buf.mark();
-				out.getStore().write(255, type, buf);
+				out.store.write(255, type, buf);
 				buf.reset();
 
 				ReferenceTable rt = in.getReferenceTable(type);
@@ -26,7 +26,7 @@ public final class CacheDefragmenter {
 						continue;
 					}
 
-					out.getStore().write(type, file, in.getStore().read(type, file));
+					out.store.write(type, file, in.store.read(type, file));
 				}
 			}
 		}

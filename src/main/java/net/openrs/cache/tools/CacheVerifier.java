@@ -23,7 +23,7 @@ public final class CacheVerifier {
 
 					ByteBuffer buffer;
 					try {
-						buffer = cache.getStore().read(type, file);
+						buffer = cache.store.read(type, file);
 					} catch (IOException ex) {
 						System.out.println(type + ":" + file + " error");
 						continue;
@@ -42,7 +42,7 @@ public final class CacheVerifier {
 					CRC32 crc = new CRC32();
 					crc.update(bytes, 0, bytes.length);
 
-					if ((int) crc.getValue() != entry.getCrc()) {
+					if ((int) crc.getValue() != entry.crc) {
 						System.out.println(type + ":" + file + " corrupt");
 					}
 

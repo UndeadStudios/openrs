@@ -91,6 +91,9 @@ public class PossibleAnimDumper {
 			    	line = line.replace("};", "");
 			    	String[] frameIds = line.split(",");
 			    	for (String frame : frameIds) {
+							if(!anim.frameIds.equals("")){
+								continue;
+							}
 							anim.frameIds.add(Integer.parseInt(frame.trim()));
 			    	}
 			    } else if(line.contains("type.forcedPriority") || line.contains("type.priority")) {

@@ -44,6 +44,7 @@ import net.openrs.cache.type.overlays.OverlayType;
 import net.openrs.cache.type.overlays.OverlayTypeList;
 import net.openrs.cache.type.params.ParamTypeList;
 import net.openrs.cache.type.params.ParamType;
+import net.openrs.cache.type.sequences.SequenceType;
 import net.openrs.cache.type.sequences.SequenceTypeList;
 import net.openrs.cache.type.spotanims.SpotAnimType;
 import net.openrs.cache.type.spotanims.SpotAnimTypeList;
