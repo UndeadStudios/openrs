@@ -16,13 +16,13 @@ import java.nio.file.Paths;
 public class MapDumper317Format {
 
     public static void main(String[] args) throws IOException {
-        File dir = new File("D:/"+Constants.Verison_number+"dump/");
+        File dir = new File("D:/dump/");
 
         if (!dir.exists()) {
             dir.mkdirs();
         }
 
-        File mapDir = new File("D:/"+Constants.Verison_number+"dump/index4/");
+        File mapDir = new File("D:/dump/index4/");
 
         if (!mapDir.exists()) {
             mapDir.mkdirs();
@@ -49,6 +49,7 @@ public class MapDumper317Format {
                     int var17 = end << 8 | i;
                     int x = cache.getFileId(5, "m" + end + "_" + i);
                     int y = cache.getFileId(5, "l" + end + "_" + i);
+
                     if ((x != -1) && (y != -1)) {
                         raf.writeShort(var17);
                         raf.writeShort(x);

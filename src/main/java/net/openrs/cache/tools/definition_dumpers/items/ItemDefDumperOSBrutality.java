@@ -27,7 +27,7 @@ public class ItemDefDumperOSBrutality {
 	
 	public static final String EXPORT = "C:\\Users\\sgsrocks\\Desktop\\openrs\\data\\export\\ItemDefinitionsOSBrutality.json";
 	
-	public static final String LISTFILE = "./repository/types/items.txt";
+	public static final String LISTFILE = "D:\\dump\\types\\items.txt";
 	
 	static String readFile(String path, Charset encoding) 
 	  throws IOException 
@@ -84,7 +84,7 @@ public class ItemDefDumperOSBrutality {
 		
 		boolean finished = false;
 		
-		int maxId = 21252;
+		int maxId = 28470;
 	    
 	    List<Item> items = new ArrayList<>();
 		

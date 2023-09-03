@@ -14,7 +14,7 @@ import java.io.IOException;
 public class VarbitTo317Converter {
 
     public static void main(String[] args) throws IOException {
-        File dir = new File("D:/"+Constants.Verison_number+"dump");
+        File dir = new File("D:/dump");
 
         if (!dir.exists()) {
             dir.mkdirs();

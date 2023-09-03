@@ -29,6 +29,7 @@ import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import net.openrs.util.tukaani.LZMAInputStream;
 import org.apache.tools.bzip2.CBZip2InputStream;
 import org.apache.tools.bzip2.CBZip2OutputStream;
 
@@ -182,4 +183,42 @@ public final class CompressionUtils {
 
 	}
 
+	/**
+	 * Uncompresses a LZMA file.
+	 *
+	 * @param bytes
+	 *            The compressed bytes without the header.
+	 * @return The uncompressed bytes.
+	 * @throws IOException
+	 *             if an I/O error occurs.
+	 */
+	public static byte[] unlzma(byte[] bytes, int size) throws IOException {
+		/* prepare a new byte array with the lzma header at the start */
+		byte[] lzma = new byte[bytes.length + 8];
+		System.arraycopy(bytes, 0, lzma, 0, 5);
+		lzma[5] = (byte) (size >>> 0);
+		lzma[6] = (byte) (size >>> 8);
+		lzma[7] = (byte) (size >>> 16);
+		lzma[8] = (byte) (size >>> 24);
+		lzma[9] = lzma[10] = lzma[11] = lzma[12] = 0;
+		System.arraycopy(bytes, 5, lzma, 13, bytes.length - 5);
+
+		InputStream is = new LZMAInputStream(new ByteArrayInputStream(lzma));
+		try {
+			ByteArrayOutputStream os = new ByteArrayOutputStream();
+			try {
+				byte[] buf = new byte[4096];
+				int len = 0;
+				while ((len = is.read(buf, 0, buf.length)) != -1) {
+					os.write(buf, 0, len);
+				}
+			} finally {
+				os.close();
+			}
+
+			return os.toByteArray();
+		} finally {
+			is.close();
+		}
+	}
 }

@@ -14,7 +14,7 @@ public class NpcDefinitionTo317Dumper {
 
     public static void main(String[] args) throws Exception {
 
-        File dir = new File("D:/"+Constants.Verison_number+"dump");
+        File dir = new File("D:/dump");
 
         if (!dir.exists()) {
             dir.mkdirs();

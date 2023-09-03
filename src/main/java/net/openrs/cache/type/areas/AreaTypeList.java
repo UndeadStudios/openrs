@@ -1474,6 +1474,7 @@ public class AreaTypeList implements TypeList<AreaType> {
 							break;
 
 						case 239:
+							type.spriteId = 6;
 							type.name = "Pyramid";
 							type.anInt1959 = 16777215;
 							type.anInt1980 = -1;// -1;// 1129;
@@ -1625,6 +1626,7 @@ public class AreaTypeList implements TypeList<AreaType> {
 							break;
 
 						case 263:
+							type.spriteId = 6;
 							type.name = "Distilleries";
 							type.anInt1959 = 16777215;
 							type.anInt1980 = -1;// -1;// 1129;
@@ -5141,7 +5143,7 @@ public class AreaTypeList implements TypeList<AreaType> {
 							type.name = "Troll<br>Country";
 							type.anInt1959 = 16750623;
 							type.anInt1968 = 2;
-							type.anInt1980 = -1;
+							type.anInt1980 = -1;//
 							break;
 
 						case 870:
@@ -5154,7 +5156,156 @@ public class AreaTypeList implements TypeList<AreaType> {
 							type.spriteId = 6;
 							type.anInt1980 = -1;
 							break;
+						case 872:
+							type.name = "Skeleton";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
 
+						case 873:
+							type.name = "Callisto's Den";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 874:
+							type.name = "Silk Chasm";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 875:
+							type.name = "Vet'ion's Rest";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 876:
+							type.name = "Hunter's End";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 877:
+							type.name = "Web Chasm";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 878:
+							type.name = "Skeletal Tomb";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 879:
+							type.name = "Ancient<br>Pyramid<br>(Jaldraocht)";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 880:
+							type.name = "Pyramid Plunder<br>(Jalsavrah)";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 881:
+							type.name = "Jaltevas";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 882:
+							type.name = "Daimon's<br>Crater";
+							type.anInt1959 = 16777215;
+							type.anInt1968 = 1;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 883:
+							type.name = "Frozen Temple";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 884:
+							type.name = "Huntsman's<br>Wood";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 885:
+							type.name = "Tower of<br>Bounty";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 886:
+							type.name = "Bounty Hunter";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;//= 1129;
+							break;
+
+						case 887:
+							type.spriteId = 125;
+							type.anInt1980 = -1;//= 1786;
+							break;
+
+						case 888:
+							type.name = "The<br>Stranglewood";
+							type.anInt1959 = 16777215;
+							type.anInt1968 = 1;
+							type.anInt1980 = -1;
+							break;
+
+						case 889:
+							type.name = "Temple";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 890:
+							type.name = "Ritual<br>Site";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 891:
+							type.name = "Main<br>Block";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 892:
+							type.name = "Administration";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 893:
+							type.name = "Refugee<br>Camp";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 894:
+							type.name = "Science<br>District";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 895:
+							type.name = "Residential<br>District";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
+
+						case 896:
+							type.name = "Sunken<br>Cathedral";
+							type.anInt1959 = 16777215;
+							type.anInt1980 = -1;
+							break;
 					}
 				}
 				count++;

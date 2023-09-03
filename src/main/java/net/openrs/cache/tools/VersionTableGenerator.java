@@ -17,7 +17,7 @@ import net.openrs.cache.FileStore;
 public final class VersionTableGenerator {
 
       public static void main(String[] args) throws FileNotFoundException, IOException {
-            try(Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {                  
+            try(Cache cache = new Cache(FileStore.open("D:\\886cache"))) {
             	ByteBuffer table = cache.createChecksumTable().encode();
             	
                 /* encode the checksum table into the 'update keys' format */

@@ -17,7 +17,7 @@ public class FloorDumper {
 
     public static void main(String[] args) {
 
-        File dir = new File("D:/"+Constants.Verison_number+"dump");
+        File dir = new File("D:/dump");
 
         if (!dir.exists()) {
             dir.mkdirs();

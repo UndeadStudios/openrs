@@ -11,7 +11,7 @@ import java.io.*;
 public class ItemDefinitionTo317Dumper {
 
     public static void main(String[] args) throws IOException {
-        File dir = new File("D:/"+Constants.Verison_number+"dump");
+        File dir = new File("D:/dump");
 
         if (!dir.exists()) {
             dir.mkdirs();
