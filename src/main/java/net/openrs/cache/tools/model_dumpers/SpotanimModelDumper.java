@@ -21,6 +21,13 @@
  */
 package net.openrs.cache.tools.model_dumpers;
 
+import net.openrs.cache.*;
+import net.openrs.cache.type.identkits.IdentkitType;
+import net.openrs.cache.type.identkits.IdentkitTypeList;
+import net.openrs.cache.type.spotanims.SpotAnimType;
+import net.openrs.cache.type.spotanims.SpotAnimTypeList;
+import net.openrs.cache.util.CompressionUtils;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,34 +37,24 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.openrs.cache.Cache;
-import net.openrs.cache.Constants;
-import net.openrs.cache.Container;
-import net.openrs.cache.FileStore;
-import net.openrs.cache.ReferenceTable;
-import net.openrs.cache.type.CacheIndex;
-import net.openrs.cache.type.objects.ObjectType;
-import net.openrs.cache.type.objects.ObjectTypeList;
-import net.openrs.cache.util.CompressionUtils;
-
 /**
- * Dumps only models for objects
+ * Dumps only models for npcs
  * 
  * @author Freyr
  *
  * @since 04/01/2017
  */
-public class ObjectModelDumper {
+public class SpotanimModelDumper {
 
 	public static void main(String[] args) throws IOException {
-		File directory = new File(Constants.MODEL_PATH + "/objects");			
+		File directory = new File(Constants.MODEL_PATH + "/spotanim/");
 		
 		if (!directory.exists()) {
 			directory.mkdirs();
 		}
 		
 		try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-			ObjectTypeList list = new ObjectTypeList();			
+			SpotAnimTypeList list = new SpotAnimTypeList();
 
 			list.initialize(cache);
 
@@ -65,21 +62,18 @@ public class ObjectModelDumper {
 
 			for (int i = 0; i < list.size(); i++) {
 
-				ObjectType obj = list.list(i);				
+				SpotAnimType idk = list.list(i);
 				
-				if (obj == null) {
+				if (idk == null) {
 					continue;
 				}
-				
-				int[] models = obj.modelIds;
-				
-				if (models != null) {
-					Arrays.stream(models).forEach(set::add);
+				if (idk.getModelID() != 0) {
+					set.add(idk.getModelID());
 				}
 
 			}
 
-			ReferenceTable table = cache.getReferenceTable(CacheIndex.MODELS);
+			ReferenceTable table = cache.getReferenceTable(7);
 
 			Iterator<Integer> itr = set.iterator();
 			

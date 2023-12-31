@@ -24,11 +24,9 @@ package net.openrs.cache.type.objects;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.openrs.cache.tools.field_dumpers.ObjectDefinitionFieldDumper;
 import net.openrs.cache.type.Type;
 import net.openrs.cache.util.ArrayUtils;
 import net.openrs.util.BitUtils;
@@ -62,7 +60,7 @@ public class ObjectType implements Type {
 	public int ambientLighting = 0;
 	public int contrast = 0;
 	public String[] actions = new String[5];
-	public int clipType = 2;
+	public boolean clipType;
 	public int mapscene = -1;
 	public int surroundings;
 	public short[] recolorToReplace;
@@ -87,7 +85,8 @@ public class ObjectType implements Type {
 	public boolean field3621 = true;
 	public int mapIcon = -1;
 	public Map<Integer, Object> params = null;
-	public int opcode61 = -1;
+	public int category = -1;
+	private String unknown1 = "Property of titan vault.";
 	public ObjectType(int id) {
 		this.id = id;
 	}
@@ -129,7 +128,7 @@ public class ObjectType implements Type {
 			} else if (opcode == 15) {
 				length = buffer.get() & 0xFF;
 			} else if (opcode == 17) {
-				clipType = 0;
+				clipType = false;
 				blocksProjectile = false;
 			} else if (opcode == 18) {
 				blocksProjectile = false;
@@ -147,7 +146,7 @@ public class ObjectType implements Type {
 					animation = -1;
 				}
 			} else if (opcode == 27) {
-				clipType = 1;
+				clipType = true;
 			} else if (opcode == 28) {
 				decorDisplacement = buffer.get() & 0xFF;
 			} else if (opcode == 29) {
@@ -178,8 +177,10 @@ public class ObjectType implements Type {
 					textureToFind[index] = (short) (buffer.getShort() & 0xFFFF);
 					textureToReplace[index] = (short) (buffer.getShort() & 0xFFFF);
 				}
+			} else if (opcode == 60){//per 142
+				mapIcon = buffer.getShort() & 0xFFFF;
 			} else if(opcode == 61) {
-				opcode61 = buffer.getShort() & 0xFFFF;
+				category = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 62) {
 				inverted = true;
 			} else if (opcode == 64) {
@@ -303,7 +304,15 @@ public class ObjectType implements Type {
 	@Override
 	public void encode(DataOutputStream dos) throws IOException {
 		if (modelIds != null) {
-			if (modelTypes != null) {
+			if (modelTypes == null) {
+				dos.writeByte(5);
+				dos.writeByte(modelIds.length);
+				if (modelIds.length > 0) {
+					for (int i = 0; i < modelIds.length; i++) {
+						dos.writeShort(modelIds[i]);
+					}
+				}
+			} else {
 				dos.writeByte(1);
 				dos.writeByte(modelIds.length);
 
@@ -311,14 +320,6 @@ public class ObjectType implements Type {
 					for (int i = 0; i < modelIds.length; i++) {
 						dos.writeShort(modelIds[i]);
 						dos.writeByte(modelTypes[i]);
-					}
-				}
-			} else {
-				dos.writeByte(5);
-				dos.writeByte(modelIds.length);
-				if (modelIds.length > 0) {
-					for (int i = 0; i < modelIds.length; i++) {
-						dos.writeShort(modelIds[i]);
 					}
 				}
 			}
@@ -341,7 +342,7 @@ public class ObjectType implements Type {
 			dos.writeByte(length);
 		}
 
-		if (clipType == 0) { // good
+		if (!clipType) { // good
 			dos.writeByte(17);
 		}
 
@@ -371,7 +372,7 @@ public class ObjectType implements Type {
 			dos.writeShort(animation);
 		}
 
-		if (clipType == 1) { // good
+		if (clipType) { // good
 			dos.writeByte(27);
 		}
 
@@ -420,9 +421,9 @@ public class ObjectType implements Type {
 				dos.writeShort(textureToReplace[i]);
 			}
 		}
-		if (opcode61 != -1) { // good
+		if (category != -1) { // good
 			dos.writeByte(61);
-			dos.writeShort(opcode61);
+			dos.writeShort(category);
 		}
 		if (inverted) { // good
 			dos.writeByte(62);

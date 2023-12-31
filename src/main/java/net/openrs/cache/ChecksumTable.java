@@ -40,7 +40,7 @@ import net.openrs.util.crypto.Whirlpool;
  * @author `Discardedx2
  */
 public class ChecksumTable {
-
+	public static final int LOADING_REQUIREMENTS = 29;
 	/**
 	 * Decodes the {@link ChecksumTable} in the specified {@link ByteBuffer}.
 	 * Whirlpool digests are not read.
@@ -91,7 +91,12 @@ public class ChecksumTable {
 		/* find out how many entries there are and allocate a new table */
 		int size = whirlpool ? (buffer.get() & 0xFF) : (buffer.limit() / 8);
 		ChecksumTable table = new ChecksumTable(size);
-
+		ByteBuffer sizes = ByteBuffer.allocate(LOADING_REQUIREMENTS * Integer.BYTES);
+		int end =  (sizes.capacity() / Integer.BYTES);
+		System.out.print("Required loading element sizes: ");
+		for (int i3 = 0; i3 < end; i3++) {
+			System.out.print(sizes.getInt() + (i3 < end - 1 ? "," : ""));
+		}
 		/* calculate the whirlpool digest we expect to have at the end */
 		byte[] masterDigest = null;
 		if (whirlpool) {
@@ -114,7 +119,6 @@ public class ChecksumTable {
 			}
 			table.entries[i] = new Entry(crc, version, files, archiveSize, digest);
 		}
-
 		/* read the trailing digest and check if it matches up */
 		if (whirlpool) {
 			byte[] bytes = new byte[buffer.remaining()];

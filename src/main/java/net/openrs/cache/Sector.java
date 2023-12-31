@@ -161,7 +161,6 @@ public final class Sector {
 		ByteBufferUtils.putMedium(buf, nextSector);
 		buf.put((byte) type);
 		buf.put(data);
-
 		return (ByteBuffer) buf.flip();
 	}
 

@@ -45,10 +45,14 @@ public class AreaType implements Type {
 	public int[] anIntArray1982;
 	public String aString1970;
 	public int[] anIntArray1981;
-	protected int anInt1980;
+	protected int category;
 	public byte[] aByteArray1979;
 	public String[] aStringArray1969 = new String[5];
 	public int field3297;
+	private boolean field1944;
+	private boolean field1945;
+	private int flags;
+	private byte opcode8;
 
 	public AreaType(int id) {
 
@@ -80,13 +84,15 @@ public class AreaType implements Type {
 			} else if (opcode == 6) {
 				anInt1968 = buffer.get() & 0xFF;
 			} else if (opcode == 7) {
-				int flags = buffer.get() & 0xFF;
+				flags = buffer.get() & 0xFF;
 				if ((flags & 0x1) == 0) {
+					this.field1944 = false;
 				}
 				if ((flags & 0x2) == 2) {
+					this.field1945 = true;
 				}
 			} else if (opcode == 8) {
-				buffer.get();
+				opcode8 = buffer.get();
 			} else if (opcode >= 10 && opcode <= 14) {
 				aStringArray1969[opcode - 10] = ByteBufferUtils.getString(buffer);
 			} else if (opcode == 15) {
@@ -115,7 +121,7 @@ public class AreaType implements Type {
 			} else if (opcode == 18) {
 				ByteBufferUtils.getSmartInt(buffer);
 			} else if (opcode == 19) {
-				anInt1980 = buffer.getShort() & 0xFFFF;
+				category = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 21) {
 				buffer.getInt();
 			} else if (opcode == 22) {
@@ -166,25 +172,42 @@ public class AreaType implements Type {
 			dos.writeByte(6);
 			dos.writeInt(anInt1968);
 		}
+		if (!field1944 || !field1945) {
+			dos.writeByte(7);
+			dos.writeByte(flags);
+		}
+		if(opcode8 != -1){
+			dos.writeByte(8);
+			dos.writeByte(opcode8);
+		}
 		if (aStringArray1969 != null && !ArrayUtils.isEmpty(aStringArray1969)) { // good
 			for (int i = 0; i < aStringArray1969.length; i++) {
 				if (aStringArray1969[i] == null) {
 					continue;
 				}
-				dos.write(6 + i);
+				dos.write(10 + i);
 				dos.write(ArrayUtils.toByteArray(aStringArray1969[i]));
 				dos.writeByte(10);
 			}
 		}
-			if (anIntArray1982 != null ) { // good
+		if (anIntArray1982 != null ) { // good
 				for (int i = 0; i < anIntArray1982.length; i++) {
 					if (anIntArray1982[i] == -1) {
 						continue;
 					}
-					dos.writeByte(12);
+					dos.writeByte(15);
 					dos.writeInt(anIntArray1982[i]);
 				}
 			}
+		if (aString1970 != null) {
+			dos.writeByte(17);
+			dos.write(ArrayUtils.toByteArray(aString1970));
+			dos.writeByte(10);
+		}
+		if (category != -1) {
+			dos.writeByte(19);
+			dos.writeShort(category);
+		}
 	}
 
 	/*

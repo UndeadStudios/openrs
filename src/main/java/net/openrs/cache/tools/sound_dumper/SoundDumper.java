@@ -3,6 +3,7 @@ package net.openrs.cache.tools.sound_dumper;
 import net.openrs.cache.*;
 import net.openrs.cache.sound.SoundEffect;
 import net.openrs.cache.type.CacheIndex;
+import net.openrs.cache.util.CompressionUtils;
 
 import javax.sound.sampled.*;
 import java.io.*;
@@ -12,12 +13,12 @@ public class SoundDumper {
 
     public static void main(String[] args) {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            File dir = Paths.get("sounds").toFile();
+            File dir = Paths.get("D:/dump/sounds").toFile();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
 
-            export(cache, dir, true);
+            export(cache, dir, false);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,8 +50,8 @@ public class SoundDumper {
                     data = bos.toByteArray();
                 }
 
-                try (FileOutputStream fos = new FileOutputStream(new File(dir, i + (wav ? ".wav" : ".dat")))) {
-                    fos.write(data);
+                try (FileOutputStream fos = new FileOutputStream(new File(dir, i + (wav ? ".wav" : ".gz")))) {
+                    fos.write(CompressionUtils.gzip(data));
                 }
 
             } catch (Exception ex) {

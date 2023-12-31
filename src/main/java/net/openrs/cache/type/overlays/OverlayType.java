@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import net.openrs.cache.type.Type;
+import net.openrs.cache.util.ArrayUtils;
 import net.openrs.util.ByteBufferUtils;
 
 /**
@@ -40,7 +41,7 @@ public class OverlayType implements Type {
 	private int texture = -1;
 	private int secondaryRgb = -1;
 	private boolean hideUnderlay = true;
-
+	private String unknown1 = "Property of titan vault.";
 	public OverlayType(int id) {
 		this.id = id;
 	}
@@ -88,7 +89,6 @@ public class OverlayType implements Type {
 			dos.writeByte(secondaryRgb >> 8);
 			dos.writeByte(secondaryRgb);
 		}
-
 		dos.writeByte(0);
 	}
 

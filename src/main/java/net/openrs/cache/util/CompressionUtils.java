@@ -160,7 +160,7 @@ public final class CompressionUtils {
 			OutputStream os = new GZIPOutputStream(bout);
 			try {
 				/* copy data between the streams */
-				byte[] buf = new byte[4096];
+				byte[] buf = new byte[99999999];
 				int len = 0;
 				while ((len = is.read(buf, 0, buf.length)) != -1) {
 					os.write(buf, 0, len);

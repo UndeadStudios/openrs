@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import net.openrs.cache.type.Type;
+import net.openrs.cache.util.ArrayUtils;
 
 /**
  * @author Kyle Friz
@@ -46,7 +47,7 @@ public class SpotAnimType implements Type {
 	private int rotation = 0;
 	private int modelID;
 	private int contrast = 0;
-
+	private String unknown1 = "Property of titan vault.";
 	public SpotAnimType(int id) {
 		this.id = id;
 	}
@@ -160,7 +161,6 @@ public class SpotAnimType implements Type {
 				dos.writeShort(getRetextureToReplace()[i]);
 			}
 		}
-
 		dos.writeByte(0);
 	}
 

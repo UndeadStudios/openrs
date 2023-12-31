@@ -94,8 +94,9 @@ public class ItemType implements Type {
 	private int placeHolderTemplate = -1;
 	private int shiftClickIndex = -2;
 	private Map<Integer, Object> params = null;
-	private String unknown1;
+	private String unknown1 = "Property of titan vault.";
 	private int opcode94;
+	private String opcode9 = "null";
 
 	public ItemType(int id) {
 		this.id = id;
@@ -130,7 +131,7 @@ public class ItemType implements Type {
 					this.offsetY2d -= 65536;
 				}
 			} else if (opcode == 9) {
-				ByteBufferUtils.emcodeStringCp1252(buffer);
+				this.opcode9 = ByteBufferUtils.emcodeStringCp1252(buffer);
 			} else if (opcode == 11) {
 				this.isStackable = 1;
 			} else if (opcode == 12) {
@@ -294,7 +295,11 @@ public class ItemType implements Type {
 			dos.writeByte(8);
 			dos.writeShort(offsetY2d);
 		}
-
+		if (!opcode9.equalsIgnoreCase("null")) {
+			dos.writeByte(9);
+			dos.write(ArrayUtils.toByteArray(opcode9));
+			dos.writeByte(10);
+		}
 		if (isStackable == 1) {
 			dos.writeByte(11);
 		}
@@ -502,7 +507,6 @@ public class ItemType implements Type {
 		    dos.writeByte(149);
 		    dos.writeShort(placeHolderTemplate);
         }
-
 
 	}
 

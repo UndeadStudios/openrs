@@ -61,7 +61,7 @@ public class ItemModelDumper {
 
 			Set<Integer> set = new HashSet<>();
 
-			for (int i = 27359; i < 27387; i++) {
+			for (int i = 0; i < itemType.size(); i++) {
 
 				ItemType item = itemType.list(i);
 				

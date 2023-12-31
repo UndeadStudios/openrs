@@ -15,7 +15,7 @@ public class AnimationDumper {
 
     public static void main(String[] args) throws Exception {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            final File dir = new File("D:/dump/index2/");
+            final File dir = new File("D:/dump/100index2/");
 
             if (!dir.exists()) {
                 dir.mkdirs();

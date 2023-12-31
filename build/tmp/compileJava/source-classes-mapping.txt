@@ -122,6 +122,8 @@ net/openrs/cache/region/HeightCalc.java
  net.openrs.cache.region.HeightCalc
 net/openrs/util/tukaani/rangecoder/RangeDecoderFromBuffer.java
  net.openrs.util.tukaani.rangecoder.RangeDecoderFromBuffer
+net/openrs/cache/tools/area_dumpers/Npclist.java
+ net.openrs.cache.tools.area_dumpers.Npclist
 net/openrs/cache/tools/definition_dumpers/npcs/NpcDefDumperExt.java
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperExt
 net/openrs/cache/tools/VersionTableGenerator.java
@@ -148,6 +150,8 @@ net/openrs/cache/tools/definition_dumpers/npcs/NpcDefDumperEXILE.java
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperEXILE$Npc
 net/openrs/cache/type/items/ItemType.java
  net.openrs.cache.type.items.ItemType
+net/openrs/cache/tools/model_dumpers/IdkModelDumper.java
+ net.openrs.cache.tools.model_dumpers.IdkModelDumper
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtPatrick.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtPatrick
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtPatrick$Item
@@ -416,8 +420,6 @@ net/openrs/util/tukaani/common/Util.java
  net.openrs.util.tukaani.common.Util
 net/openrs/util/tukaani/RawCoder.java
  net.openrs.util.tukaani.RawCoder
-net/openrs/cache/type/params/ParamType.java
- net.openrs.cache.type.params.ParamType
 net/openrs/cache/tools/definition_dumpers/npcs/NpcDefDumperRyan.java
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperRyan
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperRyan$Npc
@@ -512,6 +514,8 @@ net/openrs/cache/type/params/ParamTypeList.java
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtTyler.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtTyler
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtTyler$Item
+net/openrs/cache/tools/model_dumpers/SpotanimModelDumper.java
+ net.openrs.cache.tools.model_dumpers.SpotanimModelDumper
 net/openrs/cache/util/reflect/ClassFieldPrinter.java
  net.openrs.cache.util.reflect.ClassFieldPrinter
 net/openrs/cache/tools/definition_dumpers/npcs/NpcDefDumperDebot.java

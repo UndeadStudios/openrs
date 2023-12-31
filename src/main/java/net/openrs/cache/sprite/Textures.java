@@ -68,7 +68,6 @@ public class Textures {
 				ids[id] = texture.getIds(0);
 				count++;
 			}
-
 			table = cache.getReferenceTable(CacheIndex.SPRITES);
 			for (int id = 0; id < entry.capacity(); id++) {
 				int file = ids[id];

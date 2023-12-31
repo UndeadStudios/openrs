@@ -51,7 +51,7 @@ public class NpcType implements Type {
 	public int[] models_2;
 	static boolean field4275;
 	private int stanceAnimation = -1;
-	private int anInt2165 = -1;
+	private int turnLeftSequence = -1;
 	private int tileSpacesOccupied = -1;
 	private int walkAnimation = -1;
 	private short[] textureToReplaceWith;
@@ -73,9 +73,9 @@ public class NpcType implements Type {
 	private short[] textureToReplace;
 	private int varp32Id = -1;
 	private boolean aBool107 = true;
-	private int anInt2189 = -1;
+	private int turnRightSequence = -1;
 	private boolean aBool2190 = false;
-	private int opcode18;
+	private int category;
 	private Map<Integer, Object> params = null;
 	public int field1914 = -1;
 	public int field1919 = -1;
@@ -89,7 +89,7 @@ public class NpcType implements Type {
 	public int archiveRevision = 1;
 	public int REV_210_NPC_ARCHIVE_REV = 1493;
 
-
+	private String unknown1 = "Property of titan vault.";
 	public NpcType(int id) {
 		this.id = id;
 	}
@@ -118,16 +118,16 @@ public class NpcType implements Type {
 				} else if (opcode == 14) {
 					walkAnimation = buffer.getShort() & 0xFFFF;
 				} else if (opcode == 15) {
-					anInt2165 = buffer.getShort() & 0xFFFF;
+					turnLeftSequence = buffer.getShort() & 0xFFFF;
 				} else if (opcode == 16) {
-					anInt2189 = buffer.getShort() & 0xFFFF;
+					turnRightSequence = buffer.getShort() & 0xFFFF;
 				} else if (opcode == 17) {
 					walkAnimation = buffer.getShort() & 0xFFFF;
 					rotate180Animation = buffer.getShort() & 0xFFFF;
 					rotate90RightAnimation = buffer.getShort() & 0xFFFF;
 					rotate90LeftAnimation = buffer.getShort() & 0xFFFF;
 				} else if (opcode == 18) {
-					opcode18 = buffer.getShort() & 0xFFFF;
+					category = buffer.getShort() & 0xFFFF;
 				} else if (opcode >= 30 && opcode < 35) {
 					actions[opcode - 30] = ByteBufferUtils.getString(buffer);
 					if (actions[opcode - 30].equalsIgnoreCase("Hidden")) {
@@ -309,15 +309,15 @@ public class NpcType implements Type {
 				dos.writeShort(walkAnimation);
 			}
 
-            if (anInt2165 != -1) {
+            if (turnLeftSequence != -1) {
                 dos.writeByte(15);
-                dos.writeShort(anInt2165);
+                dos.writeShort(turnLeftSequence);
             }
 
-        if (anInt2189 != -1) {
+       		 if (turnRightSequence != -1) {
 			    dos.writeByte(16);
-			    dos.writeShort(anInt2189);
-        }
+			    dos.writeShort(turnRightSequence);
+        	}
 
 			if (walkAnimation != -1 || rotate180Animation != -1 || rotate90RightAnimation != -1
 					|| rotate90LeftAnimation != -1) {
@@ -327,9 +327,9 @@ public class NpcType implements Type {
 				dos.writeShort(rotate90RightAnimation);
 				dos.writeShort(rotate90LeftAnimation);
 			}
-			if(opcode18 != -1){
+			if(category != -1){
 				dos.writeByte(18);
-				dos.writeShort(opcode18);
+				dos.writeShort(category);
 			}
 			if (actions != null && !ArrayUtils.isEmpty(actions)) {
 				for (int i = 0; i < actions.length; i++) {
@@ -406,14 +406,9 @@ public class NpcType implements Type {
 				dos.writeByte(contrast);
 			}
 
-			if (headIconArchiveIds != null && headIconSpriteIndex != null) {
+			if (headIconSpriteIndex != null) {
 				dos.writeByte(102);
-				dos.writeByte(headIconArchiveIds.length);
-
-				for (int i = 0; i < headIconArchiveIds.length; i++) {
-					dos.writeShort(headIconArchiveIds[i]);
-					dos.writeShort(headIconSpriteIndex[i]);
-				}
+					dos.writeShort(headIconSpriteIndex[0]);
 
 			}
 
@@ -476,6 +471,7 @@ public class NpcType implements Type {
 			dos.writeShort(field1922);
 			dos.writeShort(field1923);
 		}
+
 	}
 
 	public int getID() {

@@ -130,7 +130,6 @@ public final class Cache implements Closeable {
 					whirlpool = ByteBufferUtils.getWhirlpoolDigest(buf);
 				}
 			}
-
 			table.setEntry(i, new ChecksumTable.Entry(crc, version, files, archiveSize, whirlpool));
 		}
 

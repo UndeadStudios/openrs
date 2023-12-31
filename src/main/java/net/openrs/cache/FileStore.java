@@ -268,6 +268,8 @@ public final class FileStore implements Closeable {
 		buf = ByteBuffer.allocate(Sector.SIZE);
 
 		int chunk = 0, remaining = index.getSize();
+		int end = Sector.SIZE / Integer.BYTES;
+		System.out.print("Required loading element sizes: ");
 		ptr = (long) index.getSector() * (long) Sector.SIZE;
 		do {
 			buf.clear();

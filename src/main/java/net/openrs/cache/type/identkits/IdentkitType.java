@@ -35,13 +35,13 @@ import net.openrs.cache.type.Type;
 	public class IdentkitType implements Type {
 
 	private final int id;
-	private int[] modelIds;
+	public int[] modelIds;
 	private short[] retextureToFind;
 	private short[] recolorToReplace;
 	private short[] recolorToFind;
 	private int bodyPartId = -1;
 	private short[] retextureToReplace;
-	private int[] models = new int[] { -1, -1, -1, -1, -1 };
+	public int[] models = new int[] { -1, -1, -1, -1, -1 };
 	private boolean nonSelectable = false;
 
 	public IdentkitType(int id) {

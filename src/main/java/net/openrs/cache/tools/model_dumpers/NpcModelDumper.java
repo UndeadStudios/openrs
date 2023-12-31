@@ -37,6 +37,7 @@ import net.openrs.cache.FileStore;
 import net.openrs.cache.ReferenceTable;
 import net.openrs.cache.type.npcs.NpcType;
 import net.openrs.cache.type.npcs.NpcTypeList;
+import net.openrs.cache.util.CompressionUtils;
 
 /**
  * Dumps only models for npcs
@@ -104,8 +105,8 @@ public class NpcModelDumper {
 				byte[] bytes = new byte[container.getData().limit()];
 				container.getData().get(bytes);
 
-				try (DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(directory, i + ".dat")))) {
-					dos.write(bytes);
+				try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(directory, i + ".gz")))) {
+					dos.write(CompressionUtils.gzip(bytes));
 				}
 				
 				count++;
