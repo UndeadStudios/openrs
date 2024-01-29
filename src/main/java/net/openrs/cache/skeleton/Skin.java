@@ -8,6 +8,7 @@ public class Skin {
     public int count;
     public int[] transformationTypes;
     public int[][] skinList;
+    public class217 field2523;
 
     public Skin() {
 
@@ -30,6 +31,12 @@ public class Skin {
         for (int i = 0; i < skin.count; ++i) {
             for (int j = 0; j < skin.skinList[i].length; ++j) {
                 skin.skinList[i][j] = buffer.get() & 0xFF;
+            }
+        }
+        if(buffer.capacity() < buffer.position()) {
+            int var4 = buffer.getShort() & 0xFFFF;
+            if (var4 > 0) {
+                skin.field2523 = new class217(buffer, var4);
             }
         }
         return skin;
@@ -57,7 +64,7 @@ public class Skin {
         if(buffer.capacity() < buffer.position()) {
             int var4 = buffer.getShort() & 0xFFFF;
             if(var4 > 0) {
-                //this.field2541 = new class219(var3, var4);
+                skin.field2523 = new class217(buffer, var4);
             }
         }
         return skin;

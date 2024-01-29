@@ -13,9 +13,6 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // provides javafx-gradle-plugin
-        // classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: "8.8.2"
-        // provides proguard.gradle.ProGuardTask (including all requirements)
         classpath 'net.sf.proguard:proguard-gradle:6.0.2'
     }
 }
@@ -42,13 +39,8 @@ sourceSets {
     main {
         java {
             srcDir 'src/main/java'
-//            srcDir 'runelite/http-api/src/main/java'
-//            srcDir 'runelite/runelite-api/src/main/java'
-//            srcDir 'runelite/runelite-client/src/main/java'
         }
         resources {
-//            srcDir 'runelite/http-api/src/main/resources'
-//            srcDir 'runelite/runelite-client/src/main/resources'
         }
     }
     test {
@@ -59,9 +51,6 @@ sourceSets {
 }
 
 dependencies {
-    //implementation 'com.android.support:support-annotations:28.0.0'
-
-    // implementation 'com.android.support:support-annotations:28.0.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile group: 'com.intellij', name: 'forms_rt', version: '7.0.3'
     // https://search.maven.org/artifact/org.jsoup/jsoup/1.14.2/jar

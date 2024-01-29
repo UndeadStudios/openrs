@@ -3,6 +3,7 @@ package net.openrs.cache.tools.animation_dumper;
 import net.openrs.cache.*;
 import net.openrs.cache.skeleton.Skeleton;
 import net.openrs.cache.skeleton.Skin;
+import net.openrs.cache.skeleton.class217;
 import net.openrs.cache.type.CacheIndex;
 import net.openrs.cache.util.CompressionUtils;
 
@@ -15,7 +16,7 @@ public class AnimationDumper {
 
     public static void main(String[] args) throws Exception {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            final File dir = new File("D:/dump/100index2/");
+            final File dir = new File("D:/dump/index2/");
 
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -85,26 +86,6 @@ public class AnimationDumper {
 
             final Skin skin = Skin.decode(skinBuffer);
 
-            if (!headerPacked) {
-                dos.writeByte(skin.count);
-
-                for (int i = 0; i < skin.count; ++i) {
-                    dos.writeByte(skin.transformationTypes[i]);
-                }
-
-                for (int i = 0; i < skin.count; ++i) {
-                    dos.writeByte(skin.skinList[i].length);
-                }
-
-                for (int i = 0; i < skin.count; ++i) {
-                    for (int j = 0; j < skin.skinList[i].length; ++j) {
-                        dos.writeByte(skin.skinList[i][j]);
-                    }
-                }
-
-                dos.writeShort(archive.size());
-                headerPacked = true;
-            }
 
             dos.writeShort(subSkeletonId);
             skeletons[mainSkeletonId][subSkeletonId] = Skeleton.decode(skeletonBuffer, skin, dos);

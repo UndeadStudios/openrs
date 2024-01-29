@@ -93,7 +93,7 @@ public class ChecksumTable {
 		ChecksumTable table = new ChecksumTable(size);
 		ByteBuffer sizes = ByteBuffer.allocate(LOADING_REQUIREMENTS * Integer.BYTES);
 		int end =  (sizes.capacity() / Integer.BYTES);
-		System.out.print("Required loading element sizes: ");
+		//System.out.print("Required loading element sizes: ");
 		for (int i3 = 0; i3 < end; i3++) {
 			System.out.print(sizes.getInt() + (i3 < end - 1 ? "," : ""));
 		}

@@ -54,7 +54,7 @@ public class AreaTypeList implements TypeList<AreaType> {
 
 	private AreaType[] areas;
 	
-	public boolean data317 = true;
+	public boolean data317 = false;
 
 	@Override
 	public void initialize(Cache cache) {

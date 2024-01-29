@@ -22,6 +22,8 @@ net/openrs/util/tukaani/simple/ARMThumb.java
  net.openrs.util.tukaani.simple.ARMThumb
 net/openrs/cache/tools/area_dumpers/Arealist.java
  net.openrs.cache.tools.area_dumpers.Arealist
+net/openrs/cache/skeleton/class387.java
+ net.openrs.cache.skeleton.class387
 net/openrs/cache/tools/TablesEncryptor.java
  net.openrs.cache.tools.TablesEncryptor
 net/openrs/cache/tools/config_dumpers/NpcDefinitionTo317Dumper.java
@@ -91,6 +93,8 @@ net/openrs/cache/Cache.java
  net.openrs.cache.Cache
 net/openrs/cache/type/npcs/NpcTypeList.java
  net.openrs.cache.type.npcs.NpcTypeList
+net/openrs/cache/skeleton/class416.java
+ net.openrs.cache.skeleton.class416
 net/openrs/util/tukaani/CorruptedInputException.java
  net.openrs.util.tukaani.CorruptedInputException
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtAlchr.java
@@ -128,6 +132,8 @@ net/openrs/cache/tools/definition_dumpers/npcs/NpcDefDumperExt.java
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperExt
 net/openrs/cache/tools/VersionTableGenerator.java
  net.openrs.cache.tools.VersionTableGenerator
+net/openrs/cache/skeleton/class451.java
+ net.openrs.cache.skeleton.class451
 net/openrs/cache/tools/map_dumper/MapDumper317Format.java
  net.openrs.cache.tools.map_dumper.MapDumper317Format
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtJaamakut.java
@@ -145,6 +151,8 @@ net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtMikey.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtMikey$Item
 net/openrs/cache/tools/field_dumpers/ItemDefinitionFieldDumper.java
  net.openrs.cache.tools.field_dumpers.ItemDefinitionFieldDumper
+net/openrs/cache/skeleton/class418.java
+ net.openrs.cache.skeleton.class418
 net/openrs/cache/tools/definition_dumpers/npcs/NpcDefDumperEXILE.java
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperEXILE
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperEXILE$Npc
@@ -169,6 +177,8 @@ net/openrs/cache/sound/SoundEffect3.java
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperFred.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperFred
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperFred$Item
+net/openrs/cache/skeleton/class422.java
+ net.openrs.cache.skeleton.class422
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtELKOY.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtELKOY
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtELKOY$Item
@@ -177,6 +187,10 @@ net/openrs/cache/tools/definition_dumpers/RangedBonusDumper.java
  net.openrs.cache.tools.definition_dumpers.RangedBonusDumper$Item
 net/openrs/cache/tools/type_dumper/TypeDumper.java
  net.openrs.cache.tools.type_dumper.TypeDumper
+net/openrs/cache/skeleton/class417.java
+ net.openrs.cache.skeleton.class417
+net/openrs/cache/skeleton/class217.java
+ net.openrs.cache.skeleton.class217
 net/openrs/cache/tools/config_dumpers/SeqTo317Converter.java
  net.openrs.cache.tools.config_dumpers.SeqTo317Converter
 net/openrs/cache/xtea/XTEA.java
@@ -202,6 +216,8 @@ net/openrs/util/tukaani/BCJDecoder.java
  net.openrs.util.tukaani.BCJDecoder
 net/openrs/util/tukaani/delta/DeltaCoder.java
  net.openrs.util.tukaani.delta.DeltaCoder
+net/openrs/cache/skeleton/class431.java
+ net.openrs.cache.skeleton.class431
 net/openrs/util/tukaani/delta/DeltaDecoder.java
  net.openrs.util.tukaani.delta.DeltaDecoder
 net/openrs/cache/Index.java
@@ -221,12 +237,16 @@ net/openrs/cache/tools/model_dumpers/ModelDumper.java
  net.openrs.cache.tools.model_dumpers.ModelDumper
 net/openrs/util/tukaani/SimpleInputStream.java
  net.openrs.util.tukaani.SimpleInputStream
+net/openrs/cache/skeleton/class122.java
+ net.openrs.cache.skeleton.class122
 net/openrs/cache/sprite/Textures.java
  net.openrs.cache.sprite.Textures
 net/openrs/cache/tools/config_dumpers/ItemDefinitionTo317Dumper.java
  net.openrs.cache.tools.config_dumpers.ItemDefinitionTo317Dumper
 net/openrs/util/tukaani/index/IndexBase.java
  net.openrs.util.tukaani.index.IndexBase
+net/openrs/cache/skeleton/class421.java
+ net.openrs.cache.skeleton.class421
 net/openrs/cache/tools/xtea_to_txt/XTEAConverter.java
  net.openrs.cache.tools.xtea_to_txt.XTEAConverter
  net.openrs.cache.tools.xtea_to_txt.XTEAConverter$1
@@ -256,6 +276,8 @@ net/openrs/cache/type/identkits/IdentkitTypeList.java
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtRyan.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtRyan
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtRyan$Item
+net/openrs/cache/skeleton/class388.java
+ net.openrs.cache.skeleton.class388
 net/openrs/cache/sound/Resampler.java
  net.openrs.cache.sound.Resampler
 net/openrs/cache/sound/AudioInstrument.java
@@ -410,6 +432,8 @@ net/openrs/cache/tools/definition_dumpers/animations/AnimDumperVencillio.java
  net.openrs.cache.tools.definition_dumpers.animations.AnimDumperVencillio$Npc
 net/openrs/cache/type/overlays/OverlayTypeList.java
  net.openrs.cache.type.overlays.OverlayTypeList
+net/openrs/cache/skeleton/class365.java
+ net.openrs.cache.skeleton.class365
 net/openrs/cache/type/varplayers/VarPlayerTypeList.java
  net.openrs.cache.type.varplayers.VarPlayerTypeList
 net/openrs/util/ByteBufferUtils.java
@@ -427,6 +451,8 @@ net/openrs/util/tukaani/simple/IA64.java
  net.openrs.util.tukaani.simple.IA64
 net/openrs/cache/tools/definition_dumpers/npcs/drops/NpcDropDumperVencillio.java
  net.openrs.cache.tools.definition_dumpers.npcs.drops.NpcDropDumperVencillio
+net/openrs/cache/skeleton/class481.java
+ net.openrs.cache.skeleton.class481
 net/openrs/cache/sound/AudioEnvelope.java
  net.openrs.cache.sound.AudioEnvelope
 net/openrs/cache/tools/sound_dumper/SoundDumper.java
@@ -463,6 +489,8 @@ net/openrs/cache/ReferenceTable.java
  net.openrs.cache.ReferenceTable
  net.openrs.cache.ReferenceTable$ChildEntry
  net.openrs.cache.ReferenceTable$Entry
+net/openrs/cache/skeleton/class482.java
+ net.openrs.cache.skeleton.class482
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtVencillio.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtVencillio
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtVencillio$Item
@@ -471,6 +499,8 @@ net/openrs/cache/type/hitbars/HitBarType.java
 net/openrs/cache/region/Position.java
  net.openrs.cache.region.Position
  net.openrs.cache.region.Position$RegionSize
+net/openrs/cache/skeleton/class452.java
+ net.openrs.cache.skeleton.class452
 net/openrs/cache/tools/definition_dumpers/animations/AnimDumper.java
  net.openrs.cache.tools.definition_dumpers.animations.AnimDumper
  net.openrs.cache.tools.definition_dumpers.animations.AnimDumper$Animation
@@ -480,6 +510,8 @@ net/openrs/cache/type/areas/AreaTypeList.java
  net.openrs.cache.type.areas.AreaTypeList
 net/openrs/util/tukaani/common/StreamFlags.java
  net.openrs.util.tukaani.common.StreamFlags
+net/openrs/cache/skeleton/class463.java
+ net.openrs.cache.skeleton.class463
 net/openrs/cache/type/items/ItemTypeList.java
  net.openrs.cache.type.items.ItemTypeList
 net/openrs/cache/tools/config_dumpers/AreaDefinitionTo317Dumper.java
@@ -511,6 +543,8 @@ net/openrs/cache/tools/definition_dumpers/npcs/drops/NpcDropDumperDaniel.java
  net.openrs.cache.tools.definition_dumpers.npcs.drops.NpcDropDumperDaniel
 net/openrs/cache/type/params/ParamTypeList.java
  net.openrs.cache.type.params.ParamTypeList
+net/openrs/cache/skeleton/class415.java
+ net.openrs.cache.skeleton.class415
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtTyler.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtTyler
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtTyler$Item
@@ -521,6 +555,8 @@ net/openrs/cache/util/reflect/ClassFieldPrinter.java
 net/openrs/cache/tools/definition_dumpers/npcs/NpcDefDumperDebot.java
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperDebot
  net.openrs.cache.tools.definition_dumpers.npcs.NpcDefDumperDebot$Npc
+net/openrs/cache/skeleton/class424.java
+ net.openrs.cache.skeleton.class424
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtEXILE.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtEXILE
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtEXILE$Item
