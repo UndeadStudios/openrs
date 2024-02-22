@@ -108,7 +108,7 @@ public class Archive {
 					/* copy this chunk into a temporary buffer */
 				byte[] temp = new byte[chunkSize];
 					if (buffer.remaining() < temp.length) {
-						//return null;
+						return null;
 					}
 
 					buffer.get(temp);

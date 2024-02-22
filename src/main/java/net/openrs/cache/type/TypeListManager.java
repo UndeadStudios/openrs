@@ -96,7 +96,7 @@ public class TypeListManager {
 		npc.initialize(cache);
 		obj.initialize(cache);
 		over.initialize(cache);
-		seq.initialize(cache);
+		 //seq.initialize(cache);
 		spot.initialize(cache);
 		under.initialize(cache);
 		varbit.initialize(cache);
@@ -275,7 +275,7 @@ public class TypeListManager {
 		enm.print();
 		obj.print();
 		spot.print();
-		seq.print();
+		//seq.print();
 		inv.print();
 		area.print();
 		param.print();

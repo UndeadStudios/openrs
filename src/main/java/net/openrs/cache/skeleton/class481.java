@@ -1,5 +1,5 @@
 package net.openrs.cache.skeleton;
 
-public abstract class class481 {
-    abstract Object vmethod8966(int var1);
+public  interface class481 {
+     Object vmethod8966(int var1);
 }

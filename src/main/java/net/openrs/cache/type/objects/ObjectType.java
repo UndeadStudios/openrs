@@ -87,6 +87,9 @@ public class ObjectType implements Type {
 	public Map<Integer, Object> params = null;
 	public int category = -1;
 	private String unknown1 = "Property of titan vault.";
+	private boolean field2118 = false;
+	private int field2130 = 0;
+
 	public ObjectType(int id) {
 		this.id = id;
 	}
@@ -177,8 +180,6 @@ public class ObjectType implements Type {
 					textureToFind[index] = (short) (buffer.getShort() & 0xFFFF);
 					textureToReplace[index] = (short) (buffer.getShort() & 0xFFFF);
 				}
-			} else if (opcode == 60){//per 142
-				mapIcon = buffer.getShort() & 0xFFFF;
 			} else if(opcode == 61) {
 				category = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 62) {
@@ -194,7 +195,7 @@ public class ObjectType implements Type {
 			} else if (opcode == 68) {
 				mapscene = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 69) {
-				surroundings = buffer.get();
+				surroundings = buffer.get() & 0xFF;
 			} else if (opcode == 70) {
 				offsetX = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 71) {
@@ -232,10 +233,12 @@ public class ObjectType implements Type {
 			} else if (opcode == 78) {
 				ambientSoundId = buffer.getShort() & 0xFFFF;
 				anInt2083 = buffer.get() & 0xFF;
+				this.field2130 = ((buffer.get() & 0xFF) * 128);
 			} else if (opcode == 79) {
 				anInt2112 = buffer.getShort() & 0xFFFF;
 				anInt2113 = buffer.getShort() & 0xFFFF;
-				anInt2083 = buffer.get() & 0xFF;
+				anInt2083 = (buffer.get() & 0xFF) * 128;
+				this.field2130 = ((buffer.get() & 0xFF) * 128);
 				int length = buffer.get() & 0xFF;
 				anIntArray2084 = new int[length];
 
@@ -486,17 +489,19 @@ public class ObjectType implements Type {
 			dos.writeByte(supportItems);
 		}
 
-		if (ambientSoundId != -1 || anInt2083 != 0) { // good
+		if (ambientSoundId != -1 || anInt2083 != 0 || field2130 != 0) { // good
 			dos.writeByte(78);
 			dos.writeShort(ambientSoundId);
 			dos.writeByte(anInt2083);
+			dos.writeByte(field2130);
 		}
 
-		if ((anInt2112 != 0 || anInt2113 != 0 || anInt2083 != 0) && anIntArray2084 != null) { // good
+		if ((anInt2112 != 0 || anInt2113 != 0 || anInt2083 != 0 || field2130 != 0) && anIntArray2084 != null) { // good
 			dos.writeByte(79);
 			dos.writeShort(anInt2112);
 			dos.writeShort(anInt2113);
 			dos.writeByte(anInt2083);
+			dos.writeByte(field2130);
 			dos.writeByte(anIntArray2084.length);
 			for (int i = 0; i < anIntArray2084.length; i++) {
 				dos.writeShort(anIntArray2084[i]);

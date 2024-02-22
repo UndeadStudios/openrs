@@ -25,6 +25,7 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -48,10 +49,10 @@ import net.openrs.cache.util.CompressionUtils;
 public class ItemModelDumper {
 
 	public static void main(String[] args) throws IOException {
-		File directory = new File(Constants.MODEL_PATH + "/items");			
+		File dir = Paths.get("D:/dump/items").toFile();
 		
-		if (!directory.exists()) {
-			directory.mkdirs();
+		if (!dir.exists()) {
+			dir.mkdirs();
 		}
 		
 		try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
@@ -61,7 +62,7 @@ public class ItemModelDumper {
 
 			Set<Integer> set = new HashSet<>();
 
-			for (int i = 0; i < itemType.size(); i++) {
+			for (int i = 27513; i < itemType.size(); i++) {
 
 				ItemType item = itemType.list(i);
 				
@@ -136,7 +137,7 @@ public class ItemModelDumper {
 				byte[] bytes = new byte[container.getData().limit()];
 				container.getData().get(bytes);
 
-				try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(directory, i + ".gz")))) {
+				try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(dir, i + ".gz")))) {
 					dos.write(CompressionUtils.gzip(bytes));
 				}
 				

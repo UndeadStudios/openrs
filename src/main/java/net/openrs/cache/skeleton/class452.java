@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class class452 {
+public class class452 implements class451 {
 
     Map field4849;
     final class481 field4848;

@@ -86,6 +86,31 @@ public class AnimationDumper {
 
             final Skin skin = Skin.decode(skinBuffer);
 
+            if (!headerPacked) {
+                dos.writeByte(skin.count);
+
+                for (int i = 0; i < skin.count; ++i) {
+                    dos.writeByte(skin.transformationTypes[i]);
+                }
+
+                for (int i = 0; i < skin.count; ++i) {
+                    dos.writeByte(skin.skinList[i].length);
+                }
+
+                for (int i = 0; i < skin.count; ++i) {
+                    for (int j = 0; j < skin.skinList[i].length; ++j) {
+                        dos.writeByte(skin.skinList[i][j]);
+                    }
+                }
+                if(skinBuffer.capacity() < skinBuffer.position()) {
+                    int var4 = skinBuffer.getShort() & 0xFFFF;
+                    if (var4 > 0) {
+                        skin.field2523 = new class217(skinBuffer, var4);
+                    }
+                }
+                dos.writeShort(archive.size());
+                headerPacked = true;
+            }
 
             dos.writeShort(subSkeletonId);
             skeletons[mainSkeletonId][subSkeletonId] = Skeleton.decode(skeletonBuffer, skin, dos);
