@@ -32,7 +32,7 @@ import java.util.*
  * @author Kyle Friz
  * @since Oct 18, 2015
  */
-class SequenceType(private val id: Int) : Type {
+class SequenceType<class202>(private val id: Int) : Type {
     var anIntArray2118: IntArray? = null
     var priority = -1
     var frameIDs: IntArray? = null
@@ -44,6 +44,13 @@ class SequenceType(private val id: Int) : Type {
     var forcedPriority = 5
     var leftHandItem = -1
     var maxLoops = 99
+    var var8: Boolean = false
+    var var9: Boolean = false
+    var field2250: Boolean = false
+    var var11: Int = 0
+    var var17: Int = 0
+    var var18: Int = 0
+    var var19: Int = 0
     var rightHandItem = -1
     var replayMode = 2
     var precedenceAnimating = -1
@@ -105,19 +112,64 @@ class SequenceType(private val id: Int) : Type {
                     anIntArray2118!![i] += buffer.getShort().toInt() and 0xFFFF shl 16
                 }
             } else if (opcode == 13) {
-                val count = buffer.get().toInt() and 0xFF
-                frameSounds = IntArray(count)
-                for (index in 0 until count) {
-                    frameSounds!![index] = ByteBufferUtils.get24Int(buffer)
+               val var3 = buffer.get().toInt() and 0xFF
+                this.frameSounds = IntArray(var3)
+
+                for (i in 0 until var3) {
+                    var var13: IntArray
+                    var var14: IntArray
+                    val function = {
+                        var14 = this.frameSounds!!
+                        if (buffer != null) {
+                            var8 = false
+                            var9 = false
+                            val var10 = false
+                            var11 = 0
+                            if (!field2250) {
+                                val var12: Int =  ByteBufferUtils.get24Int(buffer)
+                                var19 = var12 and 15
+                                var17 = var12 shr 8
+                                var18 = var12 shr 4 and 7
+                            } else {
+                                var17 = buffer.getShort().toInt() and 0xFFFF
+                                var18 = buffer.get().toInt() and 0xFF
+                                var19 = buffer.get().toInt() and 0xFF
+                                var11 = buffer.get().toInt() and 0xFF
+                            }
+
+                        }
+                    }
                 }
             } else if (opcode == 14) {
                 skeletalId = buffer.getInt()
             } else if (opcode == 15) {
-                val count = buffer.getShort().toInt() and 0xFFFF
-                for (var4 in 0 until count) {
-                    val skeletalsoundEffect = buffer.getShort().toInt() and 0xFFFF
-                    val skeletalsoundRange = ByteBufferUtils.get24Int(buffer)
-                    field2174[Integer.valueOf(skeletalsoundEffect)] = Integer.valueOf(skeletalsoundRange)
+                val var3 = buffer.get().toInt() and 0xFF
+                this.frameSounds = IntArray(var3)
+
+                for (i in 0 until var3) {
+                    var var13: IntArray
+                    var var14: IntArray
+                    val function = {
+                        var14 = this.frameSounds!!
+                        if (buffer != null) {
+                            var8 = false
+                            var9 = false
+                            val var10 = false
+                            var11 = 0
+                            if (!field2250) {
+                                val var12: Int =  ByteBufferUtils.get24Int(buffer)
+                                var19 = var12 and 15
+                                var17 = var12 shr 8
+                                var18 = var12 shr 4 and 7
+                            } else {
+                                var17 = buffer.getShort().toInt() and 0xFFFF
+                                var18 = buffer.get().toInt() and 0xFF
+                                var19 = buffer.get().toInt() and 0xFF
+                                var11 = buffer.get().toInt() and 0xFF
+                            }
+
+                        }
+                    }
                 }
             } else if (opcode == 16) {
                 skeletalRangeBegin = buffer.getShort().toInt() and 0xFFFF

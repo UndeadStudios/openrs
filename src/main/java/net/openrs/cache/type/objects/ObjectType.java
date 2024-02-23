@@ -60,7 +60,7 @@ public class ObjectType implements Type {
 	public int ambientLighting = 0;
 	public int contrast = 0;
 	public String[] actions = new String[5];
-	public boolean clipType;
+	public boolean clipType = true;
 	public int mapscene = -1;
 	public int surroundings;
 	public short[] recolorToReplace;
@@ -345,7 +345,7 @@ public class ObjectType implements Type {
 			dos.writeByte(length);
 		}
 
-		if (!clipType) { // good
+		if (!clipType || !blocksProjectile) { // good
 			dos.writeByte(17);
 		}
 

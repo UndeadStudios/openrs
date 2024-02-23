@@ -1,3 +1,5 @@
+net/openrs/cache/skeleton/class426.java
+ net.openrs.cache.skeleton.class426
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtPrices.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtPrices
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtPrices$Item
@@ -51,6 +53,8 @@ net/openrs/util/crypto/Whirlpool.java
  net.openrs.util.crypto.Whirlpool
 net/openrs/cache/type/ConfigArchive.java
  net.openrs.cache.type.ConfigArchive
+net/openrs/cache/skeleton/class460.java
+ net.openrs.cache.skeleton.class460
 net/openrs/cache/util/XTEAManager.java
  net.openrs.cache.util.XTEAManager
 net/openrs/cache/type/Type.java
@@ -104,6 +108,8 @@ net/openrs/cache/type/overlays/OverlayType.java
  net.openrs.cache.type.overlays.OverlayType
 net/openrs/util/Preconditions.java
  net.openrs.util.Preconditions
+net/openrs/cache/skeleton/class464.java
+ net.openrs.cache.skeleton.class464
 net/openrs/cache/track/Tracks.java
  net.openrs.cache.track.Tracks
 net/openrs/util/tukaani/DeltaInputStream.java
@@ -345,6 +351,8 @@ net/openrs/util/tukaani/UnsupportedOptionsException.java
  net.openrs.util.tukaani.UnsupportedOptionsException
 net/openrs/cache/tools/JsonLoader.java
  net.openrs.cache.tools.JsonLoader
+net/openrs/cache/skeleton/class425.java
+ net.openrs.cache.skeleton.class425
 net/openrs/util/tukaani/check/SHA256.java
  net.openrs.util.tukaani.check.SHA256
 net/openrs/util/tukaani/LZMA2Coder.java
@@ -489,6 +497,8 @@ net/openrs/cache/ReferenceTable.java
  net.openrs.cache.ReferenceTable
  net.openrs.cache.ReferenceTable$ChildEntry
  net.openrs.cache.ReferenceTable$Entry
+net/openrs/cache/skeleton/class266.java
+ net.openrs.cache.skeleton.class266
 net/openrs/cache/skeleton/class482.java
  net.openrs.cache.skeleton.class482
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtVencillio.java
@@ -514,6 +524,8 @@ net/openrs/cache/skeleton/class463.java
  net.openrs.cache.skeleton.class463
 net/openrs/cache/type/items/ItemTypeList.java
  net.openrs.cache.type.items.ItemTypeList
+net/openrs/cache/skeleton/class462.java
+ net.openrs.cache.skeleton.class462
 net/openrs/cache/tools/config_dumpers/AreaDefinitionTo317Dumper.java
  net.openrs.cache.tools.config_dumpers.AreaDefinitionTo317Dumper
 net/openrs/cache/tools/map_dumper/MapImageDumper.java
@@ -521,6 +533,8 @@ net/openrs/cache/tools/map_dumper/MapImageDumper.java
 net/openrs/cache/tools/definition_dumpers/items/ItemDefDumperExtMatt.java
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtMatt
  net.openrs.cache.tools.definition_dumpers.items.ItemDefDumperExtMatt$Item
+net/openrs/cache/skeleton/class459.java
+ net.openrs.cache.skeleton.class459
 net/openrs/model/Model.java
  net.openrs.model.Model
 net/openrs/util/tukaani/common/DecoderUtil.java
