@@ -77,19 +77,21 @@ public class NpcType implements Type {
 	private boolean aBool2190 = false;
 	private int category;
 	private Map<Integer, Object> params = null;
-	public int field1914 = -1;
-	public int field1919 = -1;
-	public int field1918 = -1;
-	public int field1938 = -1;
-	public int field1920 = -1;
-	public int field1933 = -1;
-	public int field1922 = -1;
-	public int field1923 = -1;
+	public int runSequence = -1;
+	public int runBackSequence = -1;
+	public int runRightSequence = -1;
+	public int runLeftSequence = -1;
+	public int crawlSequence = -1;
+	public int crawlBackSequence = -1;
+	public int crawlRightSequence = -1;
+	public int crawlLeftSequence = -1;
 	private boolean is210 = true;
 	public int archiveRevision = 1;
 	public int REV_210_NPC_ARCHIVE_REV = 1493;
 
 	private String unknown1 = "Property of titan vault.";
+	private boolean lowPriorityFollowerOps = false;
+
 	public NpcType(int id) {
 		this.id = id;
 	}
@@ -240,22 +242,26 @@ public class NpcType implements Type {
 					aBool107 = false;
 				} else if (opcode == 109) {
 					isClickable = false;
-				} else if (opcode == 111) {
-					aBool2190 = true;
+				//} else if (opcode == 111) {
+				//	aBool2190 = true;
 				} else if (opcode == 114) {
-					field1914 = (buffer.getShort() & 0xFFFF);
+					runSequence = (buffer.getShort() & 0xFFFF);
 				} else if (opcode == 115) {
-					field1914 = (buffer.getShort() & 0xFFFF);
-					field1919 = (buffer.getShort() & 0xFFFF);
-					field1918 = (buffer.getShort() & 0xFFFF);
-					field1938 = (buffer.getShort() & 0xFFFF);
+					runSequence = (buffer.getShort() & 0xFFFF);
+					runBackSequence = (buffer.getShort() & 0xFFFF);
+					runRightSequence = (buffer.getShort() & 0xFFFF);
+					runLeftSequence = (buffer.getShort() & 0xFFFF);
 				} else if (opcode == 116) {
-					field1920 = (buffer.getShort() & 0xFFFF);
+					crawlSequence = (buffer.getShort() & 0xFFFF);
 				} else if (opcode == 117) {
-					field1920 = (buffer.getShort() & 0xFFFF);
-					field1933 = (buffer.getShort() & 0xFFFF);
-					field1922 = (buffer.getShort() & 0xFFFF);
-					field1923 = (buffer.getShort() & 0xFFFF);
+					crawlSequence = (buffer.getShort() & 0xFFFF);
+					crawlBackSequence = (buffer.getShort() & 0xFFFF);
+					crawlRightSequence = (buffer.getShort() & 0xFFFF);
+					crawlLeftSequence = (buffer.getShort() & 0xFFFF);
+					} else if(opcode == 122) {
+					lowPriorityFollowerOps = true;
+				} else if(opcode == 123){
+					aBool2190 = true;
 				} else if (opcode == 249) {
 					int length = buffer.get() & 0xFF;
 
@@ -444,34 +450,36 @@ public class NpcType implements Type {
 				dos.writeByte(109);
 			}
 
-			if (aBool2190) {
-				dos.writeByte(111);
-			}
-		if (field1914 != -1) {
+		if (runSequence != -1) {
 			dos.writeByte(114);
-			dos.writeShort(field1914);
+			dos.writeShort(runSequence);
 		}
-		if (field1914 != -1 || field1919 != -1 || field1918 != -1
-				|| field1938 != -1) {
+		if (runSequence != -1 || runBackSequence != -1 || runRightSequence != -1
+				|| runLeftSequence != -1) {
 			dos.writeByte(115);
-			dos.writeShort(field1914);
-			dos.writeShort(field1919);
-			dos.writeShort(field1918);
-			dos.writeShort(field1938);
+			dos.writeShort(runSequence);
+			dos.writeShort(runBackSequence);
+			dos.writeShort(runRightSequence);
+			dos.writeShort(runLeftSequence);
 		}
-		if (field1920 != -1) {
+		if (crawlSequence != -1) {
 			dos.writeByte(116);
-			dos.writeShort(field1920);
+			dos.writeShort(crawlSequence);
 		}
-		if (field1920 != -1 || field1933 != -1 || field1918 != -1
-				|| field1938 != -1) {
+		if (crawlSequence != -1 || crawlBackSequence != -1 || runRightSequence != -1
+				|| crawlLeftSequence != -1) {
 			dos.writeByte(117);
-			dos.writeShort(field1920);
-			dos.writeShort(field1933);
-			dos.writeShort(field1922);
-			dos.writeShort(field1923);
+			dos.writeShort(crawlSequence);
+			dos.writeShort(crawlBackSequence);
+			dos.writeShort(crawlRightSequence);
+			dos.writeShort(crawlLeftSequence);
 		}
-
+		if (lowPriorityFollowerOps) {
+			dos.writeByte(120);
+		}
+		if (aBool2190) {
+			dos.writeByte(123);
+		}
 	}
 
 	public int getID() {

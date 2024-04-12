@@ -1,5 +1,6 @@
 package net.openrs.cache.skeleton;
 
+import net.openrs.cache.skeleton.rt7_anims.SkeletalAnimBase;
 import net.openrs.util.ByteBufferUtils;
 
 import java.io.DataOutputStream;

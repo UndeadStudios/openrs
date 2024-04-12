@@ -53,6 +53,18 @@ public class AreaType implements Type {
 	private boolean field1945;
 	private int flags;
 	private byte opcode8;
+	private int int21;
+	private int opcode18;
+	private int int22;
+	private byte int23_1;
+	private byte int23_2;
+	private byte int23_3;
+	private short int24_1;
+	private short int24_2;
+	private int int25;
+	private byte int28;
+	private byte int29;
+	private byte int30;
 
 	public AreaType(int id) {
 
@@ -119,28 +131,28 @@ public class AreaType implements Type {
 			} else if (opcode == 17) {
 				aString1970 = ByteBufferUtils.getString(buffer);
 			} else if (opcode == 18) {
-				ByteBufferUtils.getSmartInt(buffer);
+				opcode18 = ByteBufferUtils.getSmartInt(buffer);
 			} else if (opcode == 19) {
 				category = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 21) {
-				buffer.getInt();
+				int21 = buffer.getInt();
 			} else if (opcode == 22) {
-				buffer.getInt();
+				int22 = buffer.getInt();
 			} else if (opcode == 23) {
-				buffer.get();
-				buffer.get();
-				buffer.get();
+				int23_1 = buffer.get();
+				int23_2 = buffer.get();
+				int23_3 = buffer.get();
 			} else if (opcode == 24) {
-				buffer.getShort();
-				buffer.getShort();
+				int24_1 = buffer.getShort();
+				int24_2 = buffer.getShort();
 			} else if (opcode == 25) {
-				ByteBufferUtils.getSmartInt(buffer);
+				int25 = ByteBufferUtils.getSmartInt(buffer);
 			} else if (opcode == 28) {
-				buffer.get();
+				int28 = buffer.get();
 			} else if (opcode == 29) {
-				buffer.get();
+				int29 = buffer.get();
 			} else if (opcode == 30) {
-				buffer.get();
+				int30 = buffer.get();
 			}
 		}
 	}
@@ -204,9 +216,48 @@ public class AreaType implements Type {
 			dos.write(ArrayUtils.toByteArray(aString1970));
 			dos.writeByte(10);
 		}
+		if (opcode18 != -1) {
+			dos.writeByte(18);
+			dos.writeInt(opcode18);
+		}
 		if (category != -1) {
 			dos.writeByte(19);
 			dos.writeShort(category);
+		}
+		if (int21 != 1) {
+			dos.writeByte(21);
+			dos.writeInt(int21);
+		}
+		if (int22 != 1) {
+			dos.writeByte(22);
+			dos.writeInt(int22);
+		}
+		if(int23_1 != -1 || int23_2 != -1 || int23_3 != -1){
+			dos.writeByte(23);
+			dos.writeByte(int23_1);
+			dos.writeByte(int23_2);
+			dos.writeByte(int23_3);
+		}
+		if (int24_1 != -1 || int24_2 != -1) {
+			dos.writeByte(24);
+			dos.writeShort(int24_1);
+			dos.writeShort(int24_2);
+		}
+		if (int25 != -1) {
+			dos.writeByte(25);
+			dos.writeInt(int25);
+		}
+		if(int28 != -1){
+			dos.writeByte(28);
+			dos.writeByte(int28);
+		}
+		if(int29 != -1){
+			dos.writeByte(29);
+			dos.writeByte(int29);
+		}
+		if(int30 != -1){
+			dos.writeByte(30);
+			dos.writeByte(int30);
 		}
 	}
 

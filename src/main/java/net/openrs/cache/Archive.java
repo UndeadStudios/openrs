@@ -103,10 +103,10 @@ public class Archive {
 			for (id = 0; id < size; id++) {
 				try {
 					/* get the length of this chunk */
-					int chunkSize = chunkSizes[chunk][id];
+					val chunkSize = chunkSizes[chunk][id];
 
 					/* copy this chunk into a temporary buffer */
-				byte[] temp = new byte[chunkSize];
+					val temp = new byte[chunkSize];
 					if (buffer.remaining() < temp.length) {
 						return null;
 					}
@@ -116,9 +116,8 @@ public class Archive {
 					/* copy the temporary buffer into the file buffer */
 					archive.entries[id].put(temp);
 				} catch (NegativeArraySizeException exception){
-					exception.getCause();
 				}
-				}
+			}
 		}
 
 		/* flip all of the buffers */

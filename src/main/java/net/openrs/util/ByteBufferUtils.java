@@ -234,6 +234,9 @@ public final class ByteBufferUtils {
 		int shortValue = buffer.getShort() & 0xFFFF;
 		return shortValue - 32769;
 	}
+	public static float get_float(ByteBuffer buffer) {
+		return Float.intBitsToFloat(buffer.getInt());
+	}
 	public static int method8486(ByteBuffer buffer) {
 		int var1 = (buffer.get(buffer.position() - 1) & 255) + ((buffer.get(buffer.position() - 2) & 255) << 8);
 		if(var1 > 32767) {
@@ -392,4 +395,11 @@ public final class ByteBufferUtils {
 
 	}
 
+	public static int get_short(ByteBuffer packet) {
+		int i = ((packet.get(packet.position() - 2) & 0xff) << 8) + (packet.get(packet.position() - 1)& 0xff);
+		if (i > 0x7fff) {
+			i -= 0x10000;
+		}
+		return i;
+	}
 }

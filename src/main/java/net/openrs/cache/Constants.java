@@ -39,7 +39,7 @@ public final class Constants {
 	public static final String XTABLE_PATH = "./repository/xtea/tables/";
 	public static final String XMAP_PATH = "./repository/xtea/txt/";
 	public static final String XMAP_PATH_two = "./repository/xtea/525txt/";
-	public static final String TYPE_PATH = "D:/dump/types/";
+	public static final String TYPE_PATH = "D:/dump/types2/";
 	public static final String TRACK1_PATH = "./repository/songs/track1/";	
 	public static final String TRACK2_PATH = "./repository/songs/track2/";
 	public static final String WIKI_PATH = "./repository/wiki/";

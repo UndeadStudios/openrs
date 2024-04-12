@@ -36,7 +36,7 @@ public class SeqTo317Converter {
 
                 dos.writeByte(0);
 
-                System.out.println(i + " " + dos.size());
+               // System.out.println(i + " " + dos.size());
 
                 double progress = ((double) (i + 1) / list.size()) * 100;
                 System.out.println(String.format("%.2f%s", progress, "%"));

@@ -98,7 +98,7 @@ public class MapImageDumper {
 
 			if (loc != -1)
 			{
-				ByteBuffer buffer = cache.store.read(5, loc);
+				ByteBuffer buffer = cache.getStore().read(5, loc);
 				try
 				{
 					region.loadLocations(Container.decode(buffer, XTEAManager.lookup(i)).getData());

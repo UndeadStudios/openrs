@@ -1,5 +1,7 @@
 package net.openrs.cache.skeleton;
 
+import net.openrs.cache.skeleton.rt7_anims.SkeletalAnimBase;
+
 import java.nio.ByteBuffer;
 
 public class Skin {
@@ -8,14 +10,15 @@ public class Skin {
     public int count;
     public int[] transformationTypes;
     public int[][] skinList;
-    public class217 field2523;
+    public SkeletalAnimBase field2523;
 
     public Skin() {
 
     }
 
-    public static Skin encode(ByteBuffer buffer) {
+    public static Skin encode(ByteBuffer buffer, boolean highrev, int buffer_size) {
         final Skin skin = new Skin();
+        int before_read = buffer.position();
         skin.count = buffer.get() & 0xFF;
         skin.transformationTypes = new int[skin.count];
         skin.skinList = new int[skin.count][];
@@ -33,17 +36,31 @@ public class Skin {
                 skin.skinList[i][j] = buffer.get() & 0xFF;
             }
         }
-        if(buffer.capacity() < buffer.position()) {
-            int var4 = buffer.getShort() & 0xFFFF;
-            if (var4 > 0) {
-                skin.field2523 = new class217(buffer, var4);
+        int read1_size = buffer.position() - before_read;
+        if(!highrev) {
+            if (read1_size != buffer_size) {
+                try {
+                    int size = buffer.getShort() & 0xFFFF;
+                    if (size > 0) {
+                        skin.field2523 = new SkeletalAnimBase(buffer, size);
+                    }
+                } catch (Throwable t) {
+                    System.err.println("Tried to load base because there was extra base data but skeletal failed to load.");
+                    t.printStackTrace();
+                }
+            }
+            int read2_size = buffer.position() - before_read;
+
+            if(read2_size != buffer_size) {
+                throw new RuntimeException("base data size mismatch: " + read2_size + ", expected " + buffer_size);
             }
         }
         return skin;
     }
 
-    public static Skin decode(ByteBuffer buffer) {
+    public static Skin decode(ByteBuffer buffer, boolean highrev, int buffer_size) {
         final Skin skin = new Skin();
+        int before_read = buffer.position();
         skin.count = buffer.get() & 0xFF;
         skin.transformationTypes = new int[skin.count];
         skin.skinList = new int[skin.count][];
@@ -61,13 +78,32 @@ public class Skin {
                 skin.skinList[i][j] = buffer.get() & 0xFF;
             }
         }
-        if(buffer.capacity() < buffer.position()) {
-            int var4 = buffer.getShort() & 0xFFFF;
-            if(var4 > 0) {
-                skin.field2523 = new class217(buffer, var4);
+        int read1_size = buffer.position() - before_read;
+        if(!highrev) {
+            if (read1_size != buffer_size) {
+                try {
+                    int size = buffer.getShort() & 0xFFFF;
+                    if (size > 0) {
+                        skin.field2523 = new SkeletalAnimBase(buffer, size);
+                    }
+                } catch (Throwable t) {
+                    System.err.println("Tried to load base because there was extra base data but skeletal failed to load.");
+                    t.printStackTrace();
+                }
+            }
+            int read2_size = buffer.position() - before_read;
+
+            if(read2_size != buffer_size) {
+                throw new RuntimeException("base data size mismatch: " + read2_size + ", expected " + buffer_size);
             }
         }
         return skin;
     }
+    public SkeletalAnimBase get_skeletal_animbase() {
+        return field2523;
+    }
 
+    public int transforms_count() {
+        return count;
+    }
 }

@@ -20,8 +20,8 @@ public class PossibleAnimDumper {
 	
 	public static final String EXPORT = "D:/dump/PossibleanimsNoHumanoid218.json";
 	
-	public static final String LISTFILE = "D:/dump/types/sequences.txt";
-	public static final String NPCFILE = "D:/dump/types/npcs.txt";
+	public static final String LISTFILE = "D:/218.2dump/types/sequences.txt";
+	public static final String NPCFILE = "D:/218.2dump/types/npcs.txt";
 
 	private static boolean noHumanoidNpcs = true;
 	
@@ -79,7 +79,6 @@ public class PossibleAnimDumper {
 			    	line = line.replace(":", "");
 			    	anim.id = Integer.parseInt(line);
 			    } else if(line.contains("type.frameLengths")) {
-					line = line.replace("type.frameLengths = new int[] {);", "type.frameLengths = new int[] { -1 );");
 			    	line = line.replace("type.frameLengths = new int[] {", "");
 			    	line = line.replace("};", "");
 			    	String[] frameLengths = line.split(",");
@@ -88,14 +87,10 @@ public class PossibleAnimDumper {
 				    	anim.secondLastFrameLength = Integer.parseInt(frameLengths[frameLengths.length - 2].trim());
 			    	}
 			    } else if(line.contains("type.frameIDs")) {
-					line = line.replace("type.frameIDs = new int[] {);", "type.frameIDs = new int[] { -1 );");
 			    	line = line.replace("type.frameIDs = new int[] {", "");
 			    	line = line.replace("};", "");
 			    	String[] frameIds = line.split(",");
 			    	for (String frame : frameIds) {
-						if(!anim.frameIds.equals("")){
-							continue;
-						}
 							anim.frameIds.add(Integer.parseInt(frame.trim()));
 			    	}
 			    } else if(line.contains("type.forcedPriority") || line.contains("type.priority")) {

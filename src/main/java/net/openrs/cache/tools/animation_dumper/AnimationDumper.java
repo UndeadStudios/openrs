@@ -3,7 +3,7 @@ package net.openrs.cache.tools.animation_dumper;
 import net.openrs.cache.*;
 import net.openrs.cache.skeleton.Skeleton;
 import net.openrs.cache.skeleton.Skin;
-import net.openrs.cache.skeleton.class217;
+import net.openrs.cache.skeleton.rt7_anims.SkeletalAnimBase;
 import net.openrs.cache.type.CacheIndex;
 import net.openrs.cache.util.CompressionUtils;
 
@@ -13,6 +13,7 @@ import java.nio.ByteBuffer;
 public class AnimationDumper {
 
     public static boolean headerPacked;
+    private static boolean highrev = false;
 
     public static void main(String[] args) throws Exception {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
@@ -79,12 +80,12 @@ public class AnimationDumper {
             final Container skinContainer = cache.read(CacheIndex.FRAMEMAPS, skinId);
 
             final ByteBuffer skinBuffer = skinContainer.getData();
-
+            int before_read = skinBuffer.position();
             if (skinBuffer == null) {
                 return;
             }
 
-            final Skin skin = Skin.decode(skinBuffer);
+            final Skin skin = Skin.decode(skinBuffer, false, skinBuffer.capacity());
 
             if (!headerPacked) {
                 dos.writeByte(skin.count);
@@ -102,10 +103,23 @@ public class AnimationDumper {
                         dos.writeByte(skin.skinList[i][j]);
                     }
                 }
-                if(skinBuffer.capacity() < skinBuffer.position()) {
-                    int var4 = skinBuffer.getShort() & 0xFFFF;
-                    if (var4 > 0) {
-                        skin.field2523 = new class217(skinBuffer, var4);
+                int read1_size = skinBuffer.position() - before_read;
+                if(!highrev) {
+                    if (read1_size != skinBuffer.capacity()) {
+                        try {
+                            int size = skinBuffer.getShort() & 0xFFFF;
+                            if (size > 0) {
+                                dos.writeShort(skin.field2523.get_num_bones());
+                            }
+                        } catch (Throwable t) {
+                            System.err.println("Tried to load base because there was extra base data but skeletal failed to load.");
+                            t.printStackTrace();
+                        }
+                    }
+                    int read2_size = skinBuffer.position() - before_read;
+
+                    if(read2_size != skinBuffer.capacity()) {
+                        throw new RuntimeException("base data size mismatch: " + read2_size + ", expected " + skinBuffer.capacity());
                     }
                 }
                 dos.writeShort(archive.size());

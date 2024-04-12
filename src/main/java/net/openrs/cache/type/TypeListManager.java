@@ -50,6 +50,7 @@ import net.openrs.cache.type.spotanims.SpotAnimType;
 import net.openrs.cache.type.spotanims.SpotAnimTypeList;
 import net.openrs.cache.type.structs.StructType;
 import net.openrs.cache.type.structs.StructTypeList;
+import net.openrs.cache.type.texture.TextureTypeList;
 import net.openrs.cache.type.underlays.UnderlayType;
 import net.openrs.cache.type.underlays.UnderlayTypeList;
 import net.openrs.cache.type.varbits.VarBitType;
@@ -87,6 +88,7 @@ public class TypeListManager {
 	private static final StructTypeList struct = new StructTypeList();
 	private static final HitMarkTypeList hitmark = new HitMarkTypeList();
 	private static final HitBarTypeList hitbar = new HitBarTypeList();
+	private static final TextureTypeList texture = new TextureTypeList();
 	
 	public static void initialize(Cache cache) {
 		enm.initialize(cache);
@@ -96,7 +98,7 @@ public class TypeListManager {
 		npc.initialize(cache);
 		obj.initialize(cache);
 		over.initialize(cache);
-		 //seq.initialize(cache);
+		 seq.initialize(cache);
 		spot.initialize(cache);
 		under.initialize(cache);
 		varbit.initialize(cache);
@@ -108,6 +110,7 @@ public class TypeListManager {
 		struct.initialize(cache);
 		//hitmark.initialize(cache);
 		hitbar.initialize(cache);
+		//texture.initialize(cache);
 	}
 	
 	public static final int enumSize() {
@@ -275,13 +278,14 @@ public class TypeListManager {
 		enm.print();
 		obj.print();
 		spot.print();
-		//seq.print();
+		seq.print();
 		inv.print();
 		area.print();
 		param.print();
 		struct.print();
 		//hitmark.print();
 		hitbar.print();
+		//texture.print();
 	}
 
 }

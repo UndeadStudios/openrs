@@ -19,17 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package net.openrs.cache.type.areas;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+package net.openrs.cache.type.texture;
 
 import net.openrs.cache.Archive;
 import net.openrs.cache.Cache;
@@ -41,67 +31,75 @@ import net.openrs.cache.type.CacheIndex;
 import net.openrs.cache.type.ConfigArchive;
 import net.openrs.cache.type.TypeList;
 import net.openrs.cache.type.TypePrinter;
+import net.openrs.cache.type.sequences.SequenceType;
 import net.openrs.util.Preconditions;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Kyle Friz
- *
+ * 
  * @since May 26, 2015
  */
-public class AreaTypeList implements TypeList<AreaType> {
+public class TextureTypeList implements TypeList<TextureType> {
 
-	private Logger logger = Logger.getLogger(AreaTypeList.class.getName());
+	private Logger logger = Logger.getLogger(TextureTypeList.class.getName());
 
-	private AreaType[] areas;
-	
-	public boolean data317 = false;
+	private TextureType[] seqs;
 
 	@Override
 	public void initialize(Cache cache) {
 		int count = 0;
 		try {
-			ReferenceTable table = cache.getReferenceTable(CacheIndex.CONFIGS);
-			Entry entry = table.getEntry(ConfigArchive.AREA);
-			Archive archive = Archive.decode(cache.read(CacheIndex.CONFIGS, ConfigArchive.AREA).getData(),
+			ReferenceTable table = cache.getReferenceTable(CacheIndex.TEXTURES);
+			Entry entry = table.getEntry(ConfigArchive.TEXTURES);
+			Archive archive = Archive.decode(cache.read(CacheIndex.TEXTURES, ConfigArchive.TEXTURES).getData(),
 					entry.size());
 
-			areas = new AreaType[entry.capacity()];
+			seqs = new TextureType[entry.capacity()];
 			for (int id = 0; id < entry.capacity(); id++) {
 				ChildEntry child = entry.getEntry(id);
 				if (child == null)
 					continue;
 
 				ByteBuffer buffer = archive.getEntry(child.index());
-				AreaType type = new AreaType(id);
+				TextureType type = new TextureType(id);
 				type.decode(buffer);
-				areas[id] = type;
+				seqs[id] = type;
 				count++;
 			}
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error Loading AreaType(s)!", e);
+			logger.log(Level.SEVERE, "Error Loading SequenceType(s)!", e);
 		}
-		logger.info("Loaded " + count + " AreaType(s)!");
+		logger.info("Loaded " + count + " SequenceType(s)!");
 	}
 
 	@Override
-	public AreaType list(int id) {
+	public TextureType list(int id) {
 		Preconditions.checkArgument(id >= 0, "ID can't be negative!");
-		Preconditions.checkArgument(id < areas.length, "ID can't be greater than the max area id!");
-		return areas[id];
+		Preconditions.checkArgument(id < seqs.length, "ID can't be greater than the max sequence id!");
+		return seqs[id];
 	}
 
 	@Override
 	public void print() {
-	      
-	  File dir = new File(Constants.TYPE_PATH);
+	      File dir = new File(Constants.TYPE_PATH);
 
-	  if (!dir.exists()) {
-	        dir.mkdir();
-	  }
+	      if (!dir.exists()) {
+	            dir.mkdir();
+	      }
 	      
-		File file = new File(Constants.TYPE_PATH, "areas.txt");
+		File file = new File(Constants.TYPE_PATH, "textures.txt");
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-			Arrays.stream(areas).filter(Objects::nonNull).forEach((AreaType t) -> {
+			Arrays.stream(seqs).filter(Objects::nonNull).forEach((TextureType t) -> {
 				TypePrinter.print(t, writer);
 			});
 			writer.flush();
@@ -112,7 +110,7 @@ public class AreaTypeList implements TypeList<AreaType> {
 	
 	@Override
 	public int size() {
-		return areas.length;
+		return seqs.length;
 	}
 
 }

@@ -22,7 +22,9 @@
 package net.openrs.cache.type.sequences
 
 import net.openrs.cache.type.Type
-import net.openrs.util.ByteBufferUtils
+import net.openrs.cache.util.Sound
+import net.openrs.util.revisionIsOrBefore
+import net.openrs.util.write24bitInt
 import java.io.DataOutputStream
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -32,32 +34,25 @@ import java.util.*
  * @author Kyle Friz
  * @since Oct 18, 2015
  */
-class SequenceType<class202>(private val id: Int) : Type {
-    var anIntArray2118: IntArray? = null
+class SequenceType(private val id: Int) : Type {
+    var chatFrameIds: IntArray? = null
     var priority = -1
     var frameIDs: IntArray? = null
     var frameLengths: IntArray? = null
-    var frameSounds: IntArray? = null
+    var frameSounds: Array<Sound?> = emptyArray()
     var frameStep = -1
     var interleaveLeave: IntArray? = null
     var isStretches = false
     var forcedPriority = 5
     var leftHandItem = -1
     var maxLoops = 99
-    var var8: Boolean = false
-    var var9: Boolean = false
-    var field2250: Boolean = false
-    var var11: Int = 0
-    var var17: Int = 0
-    var var18: Int = 0
-    var var19: Int = 0
     var rightHandItem = -1
     var replayMode = 2
     var precedenceAnimating = -1
     private var unknown: BooleanArray? = null
-    private var field2174: MutableMap<Int?, Int?> = HashMap()
-    private var skeletalRangeBegin = 0
-    private var skeletalRangeEnd = 0
+    private var field2174: MutableMap<Int, Sound> = emptyMap<Int, Sound>().toMutableMap()
+    private var skeletalRangeBegin = -1
+    private var skeletalRangeEnd = -1
     var skeletalId = -1
     override fun decode(buffer: ByteBuffer) {
         while (true) {
@@ -67,15 +62,15 @@ class SequenceType<class202>(private val id: Int) : Type {
             } else if (opcode == 1) {
                 val count = buffer.getShort().toInt() and 0xFFFF
                 frameLengths = IntArray(count)
+                (0 until count).forEach {
+                    frameLengths!![it] = buffer.getShort().toInt() and 0xFFFF
+                }
                 frameIDs = IntArray(count)
-                for (i in 0 until count) {
-                    frameLengths!![i] = buffer.getShort().toInt() and 0xFFFF
+                (0 until count).forEach {
+                    frameIDs!![it] = buffer.getShort().toInt() and 0xFFFF
                 }
-                for (i in 0 until count) {
-                    frameIDs!![i] = buffer.getShort().toInt() and 0xFFFF
-                }
-                for (i in 0 until count) {
-                    frameIDs!![i] += buffer.getShort().toInt() and 0xFFFF shl 16
+                (0 until count).forEach {
+                    frameIDs!![it] += buffer.getShort().toInt() and 0xFFFF shl 16
                 }
             } else if (opcode == 2) {
                 frameStep = buffer.getShort().toInt() and 0xFFFF
@@ -104,71 +99,30 @@ class SequenceType<class202>(private val id: Int) : Type {
                 replayMode = buffer.get().toInt() and 0xFF
             } else if (opcode == 12) {
                 val count = buffer.get().toInt() and 0xFF
-                anIntArray2118 = IntArray(count)
-                for (i in 0 until count) {
-                    anIntArray2118!![i] = buffer.getShort().toInt() and 0xFFFF
+                chatFrameIds = IntArray(count)
+                (0 until count).forEach {
+                    chatFrameIds!![it] = buffer.getShort().toInt() and 0xFFFF
                 }
-                for (i in 0 until count) {
-                    anIntArray2118!![i] += buffer.getShort().toInt() and 0xFFFF shl 16
+                (0 until count).forEach {
+                    chatFrameIds!![it] += buffer.getShort().toInt() and 0xFFFF shl 16
                 }
             } else if (opcode == 13) {
-               val var3 = buffer.get().toInt() and 0xFF
-                this.frameSounds = IntArray(var3)
+                val length: Int = buffer.get().toInt() and 0xFF
+                frameSounds = arrayOfNulls(length)
 
-                for (i in 0 until var3) {
-                    var var13: IntArray
-                    var var14: IntArray
-                    val function = {
-                        var14 = this.frameSounds!!
-                        if (buffer != null) {
-                            var8 = false
-                            var9 = false
-                            val var10 = false
-                            var11 = 0
-                            if (!field2250) {
-                                val var12: Int =  ByteBufferUtils.get24Int(buffer)
-                                var19 = var12 and 15
-                                var17 = var12 shr 8
-                                var18 = var12 shr 4 and 7
-                            } else {
-                                var17 = buffer.getShort().toInt() and 0xFFFF
-                                var18 = buffer.get().toInt() and 0xFF
-                                var19 = buffer.get().toInt() and 0xFF
-                                var11 = buffer.get().toInt() and 0xFF
-                            }
-
-                        }
-                    }
+                for (var4 in 0 until length) {
+                    frameSounds[var4] = Sound.readFrameSound(buffer, false)
                 }
             } else if (opcode == 14) {
                 skeletalId = buffer.getInt()
             } else if (opcode == 15) {
-                val var3 = buffer.get().toInt() and 0xFF
-                this.frameSounds = IntArray(var3)
-
-                for (i in 0 until var3) {
-                    var var13: IntArray
-                    var var14: IntArray
-                    val function = {
-                        var14 = this.frameSounds!!
-                        if (buffer != null) {
-                            var8 = false
-                            var9 = false
-                            val var10 = false
-                            var11 = 0
-                            if (!field2250) {
-                                val var12: Int =  ByteBufferUtils.get24Int(buffer)
-                                var19 = var12 and 15
-                                var17 = var12 shr 8
-                                var18 = var12 shr 4 and 7
-                            } else {
-                                var17 = buffer.getShort().toInt() and 0xFFFF
-                                var18 = buffer.get().toInt() and 0xFF
-                                var19 = buffer.get().toInt() and 0xFF
-                                var11 = buffer.get().toInt() and 0xFF
-                            }
-
-                        }
+                val size: Int = buffer.getShort().toInt() and 0xFFFF
+                field2174 = emptyMap<Int, Sound>().toMutableMap()
+                for (index in 0 until size) {
+                    val frame: Int = buffer.getShort().toInt() and 0xFFFF
+                    val sound = Sound.readFrameSound(buffer, false)
+                    if (sound != null) {
+                        field2174[frame] = sound
                     }
                 }
             } else if (opcode == 16) {
@@ -192,13 +146,13 @@ class SequenceType<class202>(private val id: Int) : Type {
         if (frameLengths != null && frameIDs != null) {
             dos.writeByte(1)
             dos.writeShort(frameLengths!!.size)
-            for (i in frameLengths!!.indices) {
+            for (i in 0 until frameLengths!!.size) {
                 dos.writeShort(frameLengths!![i])
             }
-            for (i in frameIDs!!.indices) {
+        for (i in 0 until frameIDs!!.size) {
                 dos.writeShort(frameIDs!![i])
             }
-            for (i in frameIDs!!.indices) {
+        for (i in 0 until frameIDs!!.size) {
                 dos.writeShort(frameIDs!![i] shr 16)
             }
         }
@@ -209,8 +163,8 @@ class SequenceType<class202>(private val id: Int) : Type {
         if (interleaveLeave != null) {
             dos.writeByte(3)
             dos.writeByte(interleaveLeave!!.size - 1)
-            for (i in interleaveLeave!!.indices) {
-                dos.writeByte(interleaveLeave!![i])
+            for (index in 0 until interleaveLeave!!.size - 1) {
+                dos.writeByte(interleaveLeave!![index])
             }
         }
         if (isStretches) {
@@ -244,37 +198,55 @@ class SequenceType<class202>(private val id: Int) : Type {
             dos.writeByte(11)
             dos.writeByte(replayMode)
         }
-        if (anIntArray2118 != null && anIntArray2118!!.size > 0) {
+
+        if (chatFrameIds != null && chatFrameIds!!.isNotEmpty()) {
             dos.writeByte(12)
-            dos.writeByte(anIntArray2118!!.size)
-            for (i in anIntArray2118!!.indices) {
-                dos.writeShort(anIntArray2118!![i])
+            dos.writeByte(chatFrameIds!!.size)
+            for (i in 0 until chatFrameIds!!.size) {
+                dos.writeShort(chatFrameIds!!.get(i))
             }
-            for (i in anIntArray2118!!.indices) {
-                dos.writeShort(anIntArray2118!![i] shr 16)
+            for (i in 0 until chatFrameIds!!.size) {
+                dos.writeShort(chatFrameIds!!.get(i) shr 16)
             }
         }
-        if (frameSounds != null && frameSounds!!.size > 0) {
+        if (frameSounds.isNotEmpty()) {
             dos.writeByte(13)
-            dos.writeByte(frameSounds!!.size)
-            for (i in frameSounds!!.indices) {
-                dos.writeByte(frameSounds!![i] shr 16)
-                dos.writeByte(frameSounds!![i] shr 8)
-                dos.writeByte(frameSounds!![i])
+            dos.writeByte(frameSounds.size)
+            if (revisionIsOrBefore(119)) {
+                frameSounds.filterNotNull().forEach {
+                    val payload: Int = (it.location and 15) or ((it.id shl 8) or (it.loops shl 4 and 7))
+                    dos.write24bitInt(payload)
+                }
+            } else {
+                dos.writeByte(frameSounds.size)
+                frameSounds.filterNotNull().forEach {
+                    dos.writeShort(it.id)
+                    dos.writeByte(it.loops)
+                    dos.writeByte(it.location)
+                    dos.writeByte(it.retain)
+                }
             }
         }
         if (skeletalId != -1) {
             dos.writeByte(14)
             dos.writeInt(skeletalId)
         }
-        if (!field2174.entries.isEmpty()) {
+        if (field2174.isNotEmpty()) {
             dos.writeByte(15)
             dos.writeShort(field2174.size)
-            for ((key, value) in field2174) {
-                dos.writeShort(key!!)
-                dos.writeByte(value!! shr 16)
-                dos.writeByte(value shr 8)
-                dos.writeByte(value)
+            if (revisionIsOrBefore(119)) {
+                field2174.forEach {
+                    dos.writeShort(it.key)
+                    val payload: Int = (it.value.location and 15) or (it.value.id shl 8) or (it.value.loops shl 4 and 7)
+                    dos.write24bitInt(payload)
+                }
+            } else {
+                field2174.forEach {
+                    dos.writeShort(it.key)
+                    dos.writeByte(it.value.id)
+                    dos.writeByte(it.value.location)
+                    dos.writeByte(it.value.retain)
+                }
             }
         }
         if (skeletalRangeBegin != -1 || skeletalRangeEnd != -1) {
@@ -284,6 +256,7 @@ class SequenceType<class202>(private val id: Int) : Type {
         }
         if (unknown != null) {
             dos.writeByte(17)
+
             dos.writeByte(unknown!!.filter { it }.size)
             unknown!!.forEachIndexed { index, state ->
                 if(state) {

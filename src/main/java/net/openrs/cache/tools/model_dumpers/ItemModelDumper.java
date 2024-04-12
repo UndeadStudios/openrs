@@ -49,20 +49,20 @@ import net.openrs.cache.util.CompressionUtils;
 public class ItemModelDumper {
 
 	public static void main(String[] args) throws IOException {
-		File dir = Paths.get("D:/dump/items").toFile();
+		File dir = Paths.get("D:/dump/items2").toFile();
 		
 		if (!dir.exists()) {
 			dir.mkdirs();
 		}
 		
-		try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
+		try (Cache cache = new Cache(FileStore.open("D:\\new downloads\\2019-05-23-rev180\\cache"))) {
 			ItemTypeList itemType = new ItemTypeList();
 
 			itemType.initialize(cache);
 
 			Set<Integer> set = new HashSet<>();
 
-			for (int i = 27513; i < itemType.size(); i++) {
+			for (int i = 7809; i < 11673; i++) {
 
 				ItemType item = itemType.list(i);
 				
@@ -137,8 +137,8 @@ public class ItemModelDumper {
 				byte[] bytes = new byte[container.getData().limit()];
 				container.getData().get(bytes);
 
-				try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(dir, i + ".gz")))) {
-					dos.write(CompressionUtils.gzip(bytes));
+				try(DataOutputStream dos = new DataOutputStream(new FileOutputStream(new File(dir, i+45000 + ".dat")))) {
+					dos.write(bytes);
 				}
 				
 				count++;

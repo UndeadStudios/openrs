@@ -97,6 +97,7 @@ public class ItemType implements Type {
 	private String unknown1 = "Property of titan vault.";
 	private int opcode94;
 	private String opcode9 = "null";
+	private String field2334= "null";
 
 	public ItemType(int id) {
 		this.id = id;
@@ -114,6 +115,8 @@ public class ItemType implements Type {
 				this.inventoryModel = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 2) {
 				this.name = ByteBufferUtils.emcodeStringCp1252(buffer);
+			} else if (opcode == 3) {
+				this.field2334 = ByteBufferUtils.emcodeStringCp1252(buffer);
 			} else if (opcode == 4) {
 				this.zoom2d = buffer.getShort() & 0xFFFF;
 			} else if (opcode == 5) {
@@ -270,7 +273,11 @@ public class ItemType implements Type {
 			dos.write(ArrayUtils.toByteArray(name));
 			dos.writeByte(10);
 		}
-
+		if (!field2334.equalsIgnoreCase("null")) {
+			dos.writeByte(3);
+			dos.write(ArrayUtils.toByteArray(field2334));
+			dos.writeByte(10);
+		}
 		if (zoom2d != 2000) {
 			dos.writeByte(4);
 			dos.writeShort(zoom2d);
