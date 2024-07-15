@@ -33,7 +33,7 @@ fun ByteBuffer.readParams(): MutableMap<Int, String> {
  * What Revision the user wants to dump.
  */
 var revision : Int = -1
-fun revisionID() = revision
+fun revisionID() = 221
 
 fun revisionIsOrAfter(rev : Int) = rev <= revisionID()
 fun revisionIsOrBefore(rev : Int) = rev >= revisionID()

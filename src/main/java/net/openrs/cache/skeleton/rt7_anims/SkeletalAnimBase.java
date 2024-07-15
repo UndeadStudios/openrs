@@ -4,7 +4,7 @@ package net.openrs.cache.skeleton.rt7_anims;
 import java.nio.ByteBuffer;
 
 public class SkeletalAnimBase {
-   AnimationBone[] bones;
+   public AnimationBone[] bones;
    int max_connections;
 
    public SkeletalAnimBase(ByteBuffer packet, int count) {
@@ -20,8 +20,9 @@ public class SkeletalAnimBase {
    }
 
    void init_parents() {
-      for(int b = 0; b < 800; ++b) {
-         AnimationBone bone = this.bones[b];
+      AnimationBone[] var1 = this.bones;
+      for(int b = 0; b < var1.length; ++b) {
+         AnimationBone bone = var1[b];
          if (bone.parent_id >= 0) {
             bone.parent = this.bones[bone.parent_id];
          }

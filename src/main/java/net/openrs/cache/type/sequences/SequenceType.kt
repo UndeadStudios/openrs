@@ -146,14 +146,14 @@ class SequenceType(private val id: Int) : Type {
         if (frameLengths != null && frameIDs != null) {
             dos.writeByte(1)
             dos.writeShort(frameLengths!!.size)
-            for (i in 0 until frameLengths!!.size) {
-                dos.writeShort(frameLengths!![i])
+            for (index in 0 until frameLengths!!.size) {
+                dos.writeShort(frameLengths!![index])
             }
-        for (i in 0 until frameIDs!!.size) {
-                dos.writeShort(frameIDs!![i])
+            for (index in 0 until frameIDs!!.size) {
+                dos.writeShort(frameIDs!![index])
             }
-        for (i in 0 until frameIDs!!.size) {
-                dos.writeShort(frameIDs!![i] shr 16)
+            for (index in 0 until frameIDs!!.size) {
+                dos.writeShort(frameIDs!![index] shr 16)
             }
         }
         if (frameStep != -1) {

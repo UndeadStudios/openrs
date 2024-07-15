@@ -18,7 +18,7 @@ public class SoundDumper {
                 dir.mkdirs();
             }
 
-            export(cache, dir, false);
+            export(cache, dir, true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,8 +51,7 @@ public class SoundDumper {
                 }
 
                 try (FileOutputStream fos = new FileOutputStream(new File(dir, i + (wav ? ".wav" : ".gz")))) {
-                    fos.write(CompressionUtils.gzip(data));
-                }
+                    fos.write(data);}
 
             } catch (Exception ex) {
                 System.out.println("error decoding sound: " + i);

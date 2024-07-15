@@ -28,6 +28,7 @@ package net.openrs.cache;
 public final class Constants {
 	
 	public static final String CACHE_PATH = "./repository/cache/";
+	public static final String CACHE_PATH218 = "D:\\Server Tools\\server stuff\\server stuff\\osrs cache downloader\\data\\218\\";
 	public static final String CACHE_PATH1 = "./repository/525cache/";
 	public static final String CACHE_PATH_two = "./repository/525cache/";
 	public static final String xmas_CACHE_PATH = "./repository/202cache/";
@@ -39,7 +40,7 @@ public final class Constants {
 	public static final String XTABLE_PATH = "./repository/xtea/tables/";
 	public static final String XMAP_PATH = "./repository/xtea/txt/";
 	public static final String XMAP_PATH_two = "./repository/xtea/525txt/";
-	public static final String TYPE_PATH = "D:/dump/types2/";
+	public static final String TYPE_PATH = "D:/dump/types/";
 	public static final String TRACK1_PATH = "./repository/songs/track1/";	
 	public static final String TRACK2_PATH = "./repository/songs/track2/";
 	public static final String WIKI_PATH = "./repository/wiki/";

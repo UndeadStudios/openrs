@@ -91,6 +91,8 @@ public class NpcType implements Type {
 
 	private String unknown1 = "Property of titan vault.";
 	private boolean lowPriorityFollowerOps = false;
+	private int field2030 = -1;
+	int[] field2032 = new int[]{1, 1, 1, 1, 1, 1};
 
 	public NpcType(int id) {
 		this.id = id;
@@ -162,7 +164,18 @@ public class NpcType implements Type {
 					for (int idx = 0; idx < length; ++idx) {
 						models_2[idx] = buffer.getShort() & 0xFFFF;
 					}
-
+				} else if(opcode == 74) {
+					this.field2032[0] = buffer.getShort() & 0xFFFF;
+				} else if(opcode == 75) {
+					this.field2032[1] = buffer.getShort() & 0xFFFF;
+				} else if(opcode == 76) {
+					this.field2032[2] = buffer.getShort() & 0xFFFF;
+				} else if(opcode == 77) {
+					this.field2032[3] = buffer.getShort() & 0xFFFF;
+				} else if(opcode == 78) {
+					this.field2032[4] = buffer.getShort() & 0xFFFF;
+				} else if(opcode == 79) {
+					this.field2032[5] = buffer.getShort() & 0xFFFF;
 				} else if (opcode == 93) {
 					renderOnMinimap = false;
 				} else if (opcode == 95) {
@@ -262,6 +275,8 @@ public class NpcType implements Type {
 					lowPriorityFollowerOps = true;
 				} else if(opcode == 123){
 					aBool2190 = true;
+				} else if(opcode == 124) {
+					field2030 = (buffer.getShort() & 0xFFFF);
 				} else if (opcode == 249) {
 					int length = buffer.get() & 0xFF;
 
@@ -479,6 +494,10 @@ public class NpcType implements Type {
 		}
 		if (aBool2190) {
 			dos.writeByte(123);
+		}
+		if (field2030 != -1) {
+			dos.writeByte(124);
+			dos.writeShort(field2030);
 		}
 	}
 

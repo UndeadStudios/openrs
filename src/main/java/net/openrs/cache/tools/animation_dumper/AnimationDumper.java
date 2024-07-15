@@ -3,12 +3,15 @@ package net.openrs.cache.tools.animation_dumper;
 import net.openrs.cache.*;
 import net.openrs.cache.skeleton.Skeleton;
 import net.openrs.cache.skeleton.Skin;
+import net.openrs.cache.skeleton.rt7_anims.AnimKeyFrameSet;
 import net.openrs.cache.skeleton.rt7_anims.SkeletalAnimBase;
 import net.openrs.cache.type.CacheIndex;
 import net.openrs.cache.util.CompressionUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+
+import static net.openrs.cache.skeleton.rt7_anims.AnimKeyFrameSet.*;
 
 public class AnimationDumper {
 
@@ -109,7 +112,7 @@ public class AnimationDumper {
                         try {
                             int size = skinBuffer.getShort() & 0xFFFF;
                             if (size > 0) {
-                                dos.writeShort(skin.field2523.get_num_bones());
+                                dos.writeShort(skin.field2523.bones.length);
                             }
                         } catch (Throwable t) {
                             System.err.println("Tried to load base because there was extra base data but skeletal failed to load.");
@@ -127,7 +130,7 @@ public class AnimationDumper {
             }
 
             dos.writeShort(subSkeletonId);
-            skeletons[mainSkeletonId][subSkeletonId] = Skeleton.decode(skeletonBuffer, skin, dos);
+            skeletons[mainSkeletonId][subSkeletonId] = load(skin.id, skinContainer.encode().array());
         } catch (Exception e) {
 
         }

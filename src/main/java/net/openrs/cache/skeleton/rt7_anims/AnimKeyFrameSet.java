@@ -7,6 +7,8 @@ import net.openrs.cache.util.jagex.jagex3.math.Matrix4f;
 import net.openrs.cache.util.jagex.jagex3.math.Quaternion;
 import net.openrs.util.ByteBufferUtils;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class AnimKeyFrameSet {
@@ -19,18 +21,19 @@ public class AnimKeyFrameSet {
 
 
    public static AnimKeyFrameSet[] keyframesetset;
+   private int frame_size;
+   private int rtog;
+   private int rtog2;
+   private int var4;
 
    public AnimKeyFrameSet() {}
 
    public static void init() {
-      keyframesetset = new AnimKeyFrameSet[4000];
+      keyframesetset = new AnimKeyFrameSet[4500];
    }
-   public static void load(int group, byte[] fileData){
+   public static Skeleton load(int group, byte[] fileData){
       try {
          ByteBuffer keyframe_buffer = ByteBuffer.wrap(fileData);
-         if((keyframe_buffer.getShort() & 0xFFFF) != 420) {
-            System.err.println("Not a keyframe file!");
-         }
          int baseSize = keyframe_buffer.getInt();//need to write this
          byte[] base_data = new byte[baseSize];
          keyframe_buffer.get(base_data, 0, baseSize);
@@ -56,23 +59,70 @@ public class AnimKeyFrameSet {
             keyframe.decode(keyframe_buffer, version);
          } catch(RuntimeException exception) {
             keyframesetset[group] = null;
-            System.err.println("Error1 unpacking keyframes " + group + " file size from cache = " + fileData.length);
+            System.err.println("Error1 unpacking keyframes " + group + " file size from cache = " + fileData);
             exception.printStackTrace();
          }
       } catch(Exception exception) {
          System.err.println("Error2 unpacking keyframes " + group);
          exception.printStackTrace();
       }
+      return null;
    }
 
-
-   void decode(ByteBuffer packet, int version) {
-      int frame_size = packet.getInt();
+   void encode(ByteBuffer packet, int version, DataOutputStream dos) throws IOException {
+      dos.writeInt(frame_size);
       int before_read = packet.position();
-      int rtog = packet.getShort() & 0xFFFF;//starttick
-      int rtog2 = packet.getShort() & 0xFFFF;
+      dos.writeShort(rtog);
+      dos.writeShort(rtog2);
+      dos.writeByte(keyframe_id);
+      dos.writeShort(var4);
+      this.skeletal_transforms = new AnimationKeyFrame[this.base.get_skeletal_animbase().get_num_bones()][];
+      this.transforms = new AnimationKeyFrame[this.base.transforms_count()][];
+
+      for(int var5 = 0; var5 < var4; ++var5) {
+         int var7 = packet.get() & 0xFF;
+         AnimTransform[] var8 = new AnimTransform[]{AnimTransform.NULL, AnimTransform.VERTEX, AnimTransform.field1210, AnimTransform.COLOUR, AnimTransform.TRANSPARENCY, AnimTransform.field1213};
+         AnimTransform var9 = (AnimTransform) SerialEnum.for_id((SerialEnum[]) var8, var7);
+         if (var9 == null) {
+            var9 = AnimTransform.NULL;
+         }
+
+         int var14 = ByteBufferUtils.get_short(packet);
+         AnimationChannel var10 = AnimationChannel.lookup_by_id(packet.get() & 0xFF);
+         AnimationKeyFrame var11 = new AnimationKeyFrame();
+         var11.deserialise(packet, version);
+         int count = var9.get_dimensions();
+         AnimationKeyFrame[][] transforms;
+         if (AnimTransform.VERTEX == var9) {
+            transforms = this.skeletal_transforms;
+         } else {
+            transforms = this.transforms;
+         }
+
+         if (transforms[var14] == null) {
+            transforms[var14] = new AnimationKeyFrame[count];
+         }
+
+         transforms[var14][var10.get_component()] = var11;
+         if (AnimTransform.TRANSPARENCY == var9) {
+            this.modifies_trans = true;
+         }
+      }
+      int read_size = packet.position() - before_read;
+
+      if(read_size != frame_size) {
+         throw new RuntimeException("AnimKeyFrameSet size mismatch! keyframe " + keyframe_id + ", frame size: " + frame_size + ", actual read: " + read_size);
+
+      }
+
+   }
+   void decode(ByteBuffer packet, int version) {
+       frame_size = packet.getInt();
+      int before_read = packet.position();
+       rtog = packet.getShort() & 0xFFFF;//starttick
+       rtog2 = packet.getShort() & 0xFFFF;
       this.keyframe_id = packet.get() & 0xFF;//keyframe
-      int var4 = packet.getShort() & 0xFFFF;
+       var4 = packet.getShort() & 0xFFFF;
       this.skeletal_transforms = new AnimationKeyFrame[this.base.get_skeletal_animbase().get_num_bones()][];
       this.transforms = new AnimationKeyFrame[this.base.transforms_count()][];
 

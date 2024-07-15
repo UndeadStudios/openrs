@@ -498,23 +498,23 @@ public class ObjectType implements Type {
 			dos.writeByte(supportItems);
 		}
 
-		if (ambientSoundId != -1 || anInt2083 != 0 /*|| field2130 != 0*/) { // good
+		if (ambientSoundId != -1 || anInt2083 != 0 || field2130 != 0) { // good
 			dos.writeByte(78);
 			dos.writeShort(ambientSoundId);
 			dos.writeByte(anInt2083);
-			if(pre220) {
+			//if(pre220) {
 				dos.writeByte(field2130);
-			}
+		//	}
 		}
 
-		if ((anInt2112 != 0 || anInt2113 != 0 || anInt2083 != 0 || field2130 != 0) && anIntArray2084 != null) { // good
+		if ((anInt2112 != 0 || anInt2113 != 0 || anInt2083 != 0  || field2130 != 0) && anIntArray2084 != null) { // good
 			dos.writeByte(79);
 			dos.writeShort(anInt2112);
 			dos.writeShort(anInt2113);
 			dos.writeByte(anInt2083);
-			if(pre220) {
+			//if(pre220) {
 				dos.writeByte(field2130);
-			}
+			//}
 			dos.writeByte(anIntArray2084.length);
 			for (int i = 0; i < anIntArray2084.length; i++) {
 				dos.writeShort(anIntArray2084[i]);

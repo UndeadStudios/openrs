@@ -58,7 +58,7 @@ public class NpcDropDumperJohn {
 	
 	public static final String EXPORT = "D:/dump/export/NpcDropsJohn.json";
 	
-	public static final String LISTFILE = "./repository/types/npcs.txt";
+	public static final String LISTFILE = "D:/dump/types/npcs.txt";
 	
 	public static final int MAXNPCS = 7745;
 	

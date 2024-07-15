@@ -97,7 +97,7 @@ public class ItemType implements Type {
 	private String unknown1 = "Property of titan vault.";
 	private int opcode94;
 	private String opcode9 = "null";
-	private String field2334= "null";
+	private String field2334 = "null";
 
 	public ItemType(int id) {
 		this.id = id;
@@ -722,6 +722,9 @@ public class ItemType implements Type {
 		return name;
 	}
 
+	public String getExamine() {
+		return field2334;
+	}
 	public void setName(String name) {
 		this.name = name;
 	}
