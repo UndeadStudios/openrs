@@ -1,0 +1,27 @@
+# Project exclude paths
+/out/
+/repository/
+/2061dump/
+/206dump/
+/205dump/
+/204dump/
+/11.6.2014-osrs/
+/dump/
+/data/
+/olddump/
+/olderdumpdump/
+/dump/
+/repository/cache-tmp/
+/dump/index2/
+/repository/maps/
+/repository/models/
+/repository/songs/
+/repository/sprites/
+/repository/types/
+/repository/xtea/
+/repository/models/objects/
+/repository/songs/track1/
+/repository/songs/track2/
+/repository/sprites/
+/repository/xtea/tables/
+/full_image.png

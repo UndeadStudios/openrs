@@ -1,0 +1,96 @@
+/*
+ * Updated build.gradle for Fluidsynth and FFmpeg integration.
+ */
+
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'net.sf.proguard:proguard-gradle:6.0.2'
+    }
+}
+
+plugins {
+    id 'java'
+    id "io.franzbecker.gradle-lombok" version "3.1.0"
+    id "org.jetbrains.kotlin.jvm" version "1.5.21"
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    jcenter()
+    maven { url 'http://repo.runelite.net' }
+    maven { url 'https://jitpack.io' }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+        }
+    }
+    test {
+        java {
+            srcDir 'src/test/java'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile group: 'com.intellij', name: 'forms_rt', version: '7.0.3'
+    implementation 'org.jsoup:jsoup:1.14.2'
+}
+
+lombok {
+    version = "1.18.8"
+    sha256 = ""
+}
+
+task convertMidiToOgg {
+    description = "Converts MIDI files to OGG using Fluidsynth and FFmpeg"
+    group = "conversion"
+
+    def midiDir = file("src/main/resources/midi/")
+    def oggDir = file("src/main/resources/ogg/")
+    def soundfont = file("src/main/resources/soundfont.sf2")
+
+    doLast {
+        if (!soundfont.exists()) {
+            throw new GradleException("Soundfont file not found: " + soundfont)
+        }
+        if (!midiDir.exists()) {
+            throw new GradleException("MIDI directory not found: " + midiDir)
+        }
+        if (!oggDir.exists()) {
+            oggDir.mkdirs()
+        }
+
+        midiDir.eachFile { midiFile ->
+            if (midiFile.name.endsWith('.mid')) {
+                def tempWav = file("${midiFile.name}.wav")
+                def oggFile = file("${oggDir}/${midiFile.name.replace('.mid', '.ogg')}")
+
+                // Convert MIDI to WAV with Fluidsynth
+                exec {
+                    commandLine "C:\\Users\\Sgsrocks\\Downloads\\fluidsynth-2.4.0-win10-x64\\bin\\fluidsynth.exe", "-F", tempWav.absolutePath, soundfont.absolutePath, midiFile.absolutePath
+                }
+
+                // Convert WAV to OGG with FFmpeg
+                exec {
+                    commandLine "ffmpeg", "-i", tempWav.absolutePath, "-c:a", "libvorbis", oggFile.absolutePath
+                }
+
+                tempWav.delete()
+                println "Converted ${midiFile.name} to ${oggFile.name}"
+            }
+        }
+    }
+}
