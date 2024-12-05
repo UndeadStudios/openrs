@@ -56,6 +56,7 @@ public class VarPlayerType implements Type {
 	@Override
 	public void encode(DataOutputStream dos) throws IOException {
 			if (configType != 0) {
+				dos.writeByte(5);
 				dos.writeShort(configType);
 			}
 	}

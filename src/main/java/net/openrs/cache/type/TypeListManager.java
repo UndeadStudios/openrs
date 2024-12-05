@@ -108,7 +108,7 @@ public class TypeListManager {
 		area.initialize(cache);
 		param.initialize(cache);
 		struct.initialize(cache);
-		//hitmark.initialize(cache);
+		hitmark.initialize(cache);
 		hitbar.initialize(cache);
 		//texture.initialize(cache);
 	}
@@ -283,7 +283,7 @@ public class TypeListManager {
 		area.print();
 		param.print();
 		struct.print();
-		//hitmark.print();
+		hitmark.print();
 		hitbar.print();
 		//texture.print();
 	}

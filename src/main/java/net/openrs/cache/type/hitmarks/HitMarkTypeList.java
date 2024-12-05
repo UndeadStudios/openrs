@@ -60,8 +60,8 @@ public class HitMarkTypeList implements TypeList<HitMarkType> {
 		int count = 0;
 		try {
 			ReferenceTable table = cache.getReferenceTable(CacheIndex.CONFIGS);
-			Entry entry = table.getEntry(ConfigArchive.HEALTHBAR);
-			Archive archive = Archive.decode(cache.read(CacheIndex.CONFIGS, ConfigArchive.HEALTHBAR).getData(),
+			Entry entry = table.getEntry(ConfigArchive.HITSPLAT);
+			Archive archive = Archive.decode(cache.read(CacheIndex.CONFIGS, ConfigArchive.HITSPLAT).getData(),
 					entry.size());
 
 			hitmarks = new HitMarkType[entry.capacity()];

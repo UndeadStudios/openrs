@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.openrs.cache.type.Type;
+import net.openrs.cache.util.ArrayUtils;
 import net.openrs.util.BitUtils;
 import net.openrs.util.ByteBufferUtils;
 
@@ -92,9 +93,48 @@ public class EnumType implements Type {
 	}
 
 	@Override
-	public void encode(DataOutputStream dos) throws IOException {
+	public void encode(DataOutputStream out) throws IOException {
+		// Write opcode 1 (keyType)
+		out.writeByte(1);
+		out.writeByte((byte) keyType);
 
-	}
+		// Write opcode 2 (valType)
+		out.writeByte(2);
+		out.writeByte((byte) valType);
+
+		if (!defaultString.equalsIgnoreCase("null")) {
+			out.writeByte(3);
+			out.write(ArrayUtils.toByteArray(defaultString));
+			out.writeByte(10);
+		}
+
+		// Write opcode 4 (defaultInt)
+		out.writeByte(4);
+		out.writeInt(defaultInt);
+
+		// Write opcode 5 or 6 (params)
+		if (params != null && !params.isEmpty()) {
+			// Determine if the params contain strings or integers
+			boolean hasStrings = params.values().stream().anyMatch(value -> value instanceof String);
+			int opcode = hasStrings ? 5 : 6;
+
+			out.writeByte(opcode);
+			out.writeShort(params.size());
+
+			for (Map.Entry<Integer, Object> entry : params.entrySet()) {
+				out.writeInt(entry.getKey());
+				if (hasStrings) {
+					out.write(ArrayUtils.toByteArray(entry.toString()));
+					out.writeByte(10);
+				} else {
+					out.writeInt((int) entry.getValue());
+				}
+			}
+		}
+
+		// Write end opcode (0)
+		out.writeByte(0);
+}
 
 	/*
 	 * (non-Javadoc)
