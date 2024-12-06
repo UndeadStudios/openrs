@@ -9,6 +9,9 @@ import net.openrs.cache.util.CompressionUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.Objects;
+
+import static net.openrs.cache.skeleton.Skeleton.decode;
 
 public class AnimationDumper {
 
@@ -16,7 +19,7 @@ public class AnimationDumper {
 
     public static void main(String[] args) throws Exception {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            final File dir = new File("D:/dump/test/");
+            final File dir = new File("D:/dump/test2/");
 
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -26,7 +29,7 @@ public class AnimationDumper {
 
             final Skeleton[][] skeletons = new Skeleton[skeletonTable.capacity()][];
 
-            for (int mainSkeletonId = 3754; mainSkeletonId < skeletons.length; mainSkeletonId++) {
+            for (int mainSkeletonId = 0; mainSkeletonId < skeletonTable.capacity(); mainSkeletonId++) {
 
                 if (skeletonTable.getEntry(mainSkeletonId) == null) {
                     continue;
@@ -68,7 +71,6 @@ public class AnimationDumper {
     }
 
     public static void readNext(Cache cache, DataOutputStream dos, Archive archive, int mainSkeletonId, int subSkeletonId, Skeleton[][] skeletons) throws IOException {
-        try {
             final ByteBuffer skeletonBuffer = archive.getEntry(subSkeletonId);
 
             if (skeletonBuffer.remaining() == 0) {
@@ -86,19 +88,30 @@ public class AnimationDumper {
             }
 
             final Skin skin = Skin.decode(skinBuffer, false, skinBuffer.remaining());
-            if (skin.skeletalAnimBase != null)
-                dos.writeShort(420);
-             else
-                dos.writeShort(710);
+
+            if (!headerPacked) {
+                System.out.println(skin.id);
+                if (skin.skeletalAnimBase != null)
+                    dos.writeShort(420);
+                else
+                    dos.writeShort(710);
+                dos.writeByte(0); // Add a byte break (e.g., 0x00 or any other byte value)
+                dos.writeInt(skin.count);
+
                 skin.encode(dos, false);
                 dos.writeShort(archive.size());
                 headerPacked = true;
+            }
+
             dos.writeShort(subSkeletonId);
-            skeletons[mainSkeletonId][subSkeletonId] = Skeleton.decode(skeletonBuffer, skin, dos);
-        } catch (Exception e) {
 
-        }
+            if (skin.skeletalAnimBase == null) {
+                skeletons[mainSkeletonId][subSkeletonId] = decode(skeletonBuffer, skin, dos);
+            } else {
+                AnimKeyFrameSet keyFrameSet = AnimKeyFrameSet.load(mainSkeletonId, skeletonBuffer);
+                keyFrameSet.encode(dos);
+                // Handle encoding or storing of AnimKeyFrameSet as needed
+            }
+
     }
-
-
 }

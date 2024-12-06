@@ -251,10 +251,6 @@ class SequenceType(private val id: Int) : Type {
             }
         }
 
-        if (skeletalId != -1) {
-            dos.writeByte(14)
-            dos.writeInt(skeletalId)
-        }
 
             if (revisionIsOrAfter(226)) {
                 if (skeletalId != -1) {

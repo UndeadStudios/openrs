@@ -44,7 +44,7 @@ public class Skin {
             try {
                 int skeletalSize = buffer.getShort() & 0xFFFF;
                 if (skeletalSize > 0) {
-                    skin.skeletalAnimBase = new SkeletalAnimBase(buffer, skeletalSize);
+                    skin.skeletalAnimBase = new SkeletalAnimBase(buffer,  0);
                 }
             } catch (Throwable t) {
                 System.err.println("Error loading SkeletalAnimBase. Additional skeletal data found but failed to load.");
@@ -98,13 +98,13 @@ public class Skin {
         }
 
         // Check for skeletal data and write it if it exists and highrev is false
-        if (!highrev && skeletalAnimBase != null) {
+        if (get_skeletal_animbase() != null) {
             // Write the size of the skeletal base
-            dos.writeShort(skeletalAnimBase.get_num_bones());
+            dos.writeShort(get_skeletal_animbase().bones.length);
 
             // Write each bone's data using its encode method
-            for (int i = 0; i < skeletalAnimBase.get_num_bones(); i++) {
-                AnimationBone bone = skeletalAnimBase.get_bone(i);
+            for (int i = 0; i < get_skeletal_animbase().bones.length; i++) {
+                AnimationBone bone = get_skeletal_animbase().bones[i];
                 if (bone != null) {
                     bone.encode(dos);
                 }

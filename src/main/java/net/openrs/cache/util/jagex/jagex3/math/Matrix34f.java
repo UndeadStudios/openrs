@@ -1,5 +1,8 @@
 package net.openrs.cache.util.jagex.jagex3.math;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+
 public class Matrix34f {
     float m01;
    float m10;
@@ -32,6 +35,21 @@ public class Matrix34f {
       this.m22 = 1.0F;
       this.m11 = 1.0F;
       this.m00 = 1.0F;
+   }
+   public void encode(DataOutputStream dos) throws IOException {
+      // Write each matrix component as a float
+      dos.writeFloat(m00);
+      dos.writeFloat(m01);
+      dos.writeFloat(m02);
+      dos.writeFloat(m03);
+      dos.writeFloat(m10);
+      dos.writeFloat(m11);
+      dos.writeFloat(m12);
+      dos.writeFloat(m13);
+      dos.writeFloat(m20);
+      dos.writeFloat(m21);
+      dos.writeFloat(m22);
+      dos.writeFloat(m23);
    }
 
    void rotate_x(float arg0) {
