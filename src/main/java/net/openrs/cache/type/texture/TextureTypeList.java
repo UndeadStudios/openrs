@@ -77,15 +77,15 @@ public class TextureTypeList implements TypeList<TextureType> {
 				count++;
 			}
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error Loading SequenceType(s)!", e);
+			logger.log(Level.SEVERE, "Error Loading TextureType(s)!", e);
 		}
-		logger.info("Loaded " + count + " SequenceType(s)!");
+		logger.info("Loaded " + count + " TextureType(s)!");
 	}
 
 	@Override
 	public TextureType list(int id) {
 		Preconditions.checkArgument(id >= 0, "ID can't be negative!");
-		Preconditions.checkArgument(id < seqs.length, "ID can't be greater than the max sequence id!");
+		Preconditions.checkArgument(id < seqs.length, "ID can't be greater than the max texture id!");
 		return seqs[id];
 	}
 

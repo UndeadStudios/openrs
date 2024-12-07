@@ -110,7 +110,7 @@ public class TypeListManager {
 		struct.initialize(cache);
 		hitmark.initialize(cache);
 		hitbar.initialize(cache);
-		//texture.initialize(cache);
+		texture.initialize(cache);
 	}
 	
 	public static final int enumSize() {
@@ -285,7 +285,7 @@ public class TypeListManager {
 		struct.print();
 		hitmark.print();
 		hitbar.print();
-		//texture.print();
+		texture.print();
 	}
 
 }

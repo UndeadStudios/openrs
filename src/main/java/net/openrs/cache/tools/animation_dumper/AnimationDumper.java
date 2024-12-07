@@ -19,7 +19,7 @@ public class AnimationDumper {
 
     public static void main(String[] args) throws Exception {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            final File dir = new File("D:/dump/test2/");
+            final File dir = new File("D:/dump/test/");
 
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -29,7 +29,7 @@ public class AnimationDumper {
 
             final Skeleton[][] skeletons = new Skeleton[skeletonTable.capacity()][];
 
-            for (int mainSkeletonId = 0; mainSkeletonId < skeletonTable.capacity(); mainSkeletonId++) {
+            for (int mainSkeletonId = 3754; mainSkeletonId < skeletonTable.capacity(); mainSkeletonId++) {
 
                 if (skeletonTable.getEntry(mainSkeletonId) == null) {
                     continue;
@@ -90,14 +90,15 @@ public class AnimationDumper {
             final Skin skin = Skin.decode(skinBuffer, false, skinBuffer.remaining());
 
             if (!headerPacked) {
-                System.out.println(skin.id);
-                if (skin.skeletalAnimBase != null)
+                System.out.println(skinId);
+                if (skin.skeletalAnimBase != null) {
                     dos.writeShort(420);
-                else
+                } else {
                     dos.writeShort(710);
-                dos.writeByte(0); // Add a byte break (e.g., 0x00 or any other byte value)
-                dos.writeInt(skin.count);
-
+                }
+                dos.writeByte(0x20); // Adds a space before the newline
+                        dos.writeByte(0x0A); // Adds 0x0A as the new line
+              dos.writeInt(skeletons.length);
                 skin.encode(dos, false);
                 dos.writeShort(archive.size());
                 headerPacked = true;
@@ -108,7 +109,7 @@ public class AnimationDumper {
             if (skin.skeletalAnimBase == null) {
                 skeletons[mainSkeletonId][subSkeletonId] = decode(skeletonBuffer, skin, dos);
             } else {
-                AnimKeyFrameSet keyFrameSet = AnimKeyFrameSet.load(mainSkeletonId, skeletonBuffer);
+                AnimKeyFrameSet keyFrameSet = AnimKeyFrameSet.load(skinId, skeletonBuffer);
                 keyFrameSet.encode(dos);
                 // Handle encoding or storing of AnimKeyFrameSet as needed
             }
