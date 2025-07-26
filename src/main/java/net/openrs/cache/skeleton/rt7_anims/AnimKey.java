@@ -28,7 +28,7 @@ public class AnimKey {
    }
 
    public void encode(DataOutputStream dos) throws IOException {
-      dos.writeInt(tick);
+      dos.writeShort(tick);
       dos.writeFloat(value);
       dos.writeFloat(start_val1);
       dos.writeFloat(start_val2);

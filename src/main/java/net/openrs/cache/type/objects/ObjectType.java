@@ -89,6 +89,8 @@ public class ObjectType implements Type {
 	public int category = -1;
 	private boolean field2118 = false;
 	private int field2130 = 0;
+	private short[] colorplateToFind;
+	private short[] colorplateToReplace;
 
 	public ObjectType(int id) {
 		this.id = id;
@@ -157,13 +159,13 @@ public class ObjectType implements Type {
 				decorDisplacement = buffer.get() & 0xFF;
 			} else if (opcode == 29) {
 				ambientLighting = buffer.get();
-			} else if (opcode == 39) {
-				contrast = buffer.get() * 25;
 			} else if (opcode >= 30 && opcode < 35) {
 				actions[opcode - 30] = ByteBufferUtils.getString(buffer);
 				if (actions[opcode - 30].equalsIgnoreCase("Hidden")) {
 					actions[opcode - 30] = null;
 				}
+			} else if (opcode == 39) {
+				contrast = buffer.get() * 5;
 			} else if (opcode == 40) {
 				int length = buffer.get() & 0xFF;
 				recolorToFind = new short[length];
@@ -182,6 +184,14 @@ public class ObjectType implements Type {
 				for (int index = 0; index < length; ++index) {
 					textureToFind[index] = (short) (buffer.getShort() & 0xFFFF);
 					textureToReplace[index] = (short) (buffer.getShort() & 0xFFFF);
+				}
+			} else if (opcode == 44) {
+				int length = buffer.get() & 0xFF;
+				colorplateToFind = new short[length];
+				colorplateToReplace = new short[length];
+				for (int index = 0; index < length; ++index) {
+					colorplateToFind[index] = (short) (buffer.getShort() & 0xFFFF);
+					colorplateToReplace[index] = (short) (buffer.getShort() & 0xFFFF);
 				}
 			} else if(opcode == 61) {
 				category = buffer.getShort() & 0xFFFF;
@@ -308,7 +318,7 @@ public class ObjectType implements Type {
 					params.put(key, value);
 				}
 			} else {
-				System.out.println("missing opcode:" + opcode);
+				//System.out.println("missing opcode:" + opcode);
 			}
 		}
 	}

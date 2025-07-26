@@ -9,17 +9,19 @@ import net.openrs.cache.util.CompressionUtils;
 
 import java.io.*;
 import java.nio.ByteBuffer;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import static net.openrs.cache.skeleton.Skeleton.decode;
 
 public class AnimationDumper {
 
-    public static boolean headerPacked;
+    static Set<Integer> packedHeaders = new HashSet<>();
 
     public static void main(String[] args) throws Exception {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            final File dir = new File("D:/dump/test/");
+            final File dir = new File("E:/dump/test/");
 
             if (!dir.exists()) {
                 dir.mkdirs();
@@ -46,7 +48,6 @@ public class AnimationDumper {
 
                     final int subSkeletonCount = skeletonArchive.size();
 
-                    headerPacked = false;
 
                     skeletons[mainSkeletonId] = new Skeleton[subSkeletonCount];
 
@@ -89,20 +90,17 @@ public class AnimationDumper {
 
             final Skin skin = Skin.decode(skinBuffer, false, skinBuffer.remaining());
 
-            if (!headerPacked) {
-                System.out.println(skinId);
-                if (skin.skeletalAnimBase != null) {
-                    dos.writeShort(420);
-                } else {
-                    dos.writeShort(710);
-                }
-                dos.writeByte(0x20); // Adds a space before the newline
-                        dos.writeByte(0x0A); // Adds 0x0A as the new line
-              dos.writeInt(skeletons.length);
-                skin.encode(dos, false);
-                dos.writeShort(archive.size());
-                headerPacked = true;
-            }
+        if (!packedHeaders.contains(mainSkeletonId)) {
+            System.out.println(skinId);
+
+            dos.writeShort(skin.skeletalAnimBase != null ? 420 : 710); // magic revision IDs?
+            dos.writeInt(skeletons.length);
+            skin.encode(dos, false);
+            dos.writeShort(archive.size());
+
+            packedHeaders.add(mainSkeletonId);
+        }
+
 
             dos.writeShort(subSkeletonId);
 

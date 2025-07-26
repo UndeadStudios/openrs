@@ -61,7 +61,7 @@ public class SpriteDumper {
 				Sprite sprite = Sprite.decode(container.getData());
 
 				for (int frame = 0; frame < sprite.size(); frame++) {
-					File file = new File(Constants.SPRITE_PATH,  i + "_"+frame+".png");
+					File file = new File(Constants.SPRITE_PATH,  i + ".png");
 					
 					BufferedImage image = ImageUtils.createColoredBackground(ImageUtils.makeColorTransparent(sprite.getFrame(frame), Color.WHITE), new java.awt.Color(0xFF00FF, false));
 

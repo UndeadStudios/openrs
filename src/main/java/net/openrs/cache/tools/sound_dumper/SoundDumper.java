@@ -13,7 +13,7 @@ public class SoundDumper {
 
     public static void main(String[] args) {
         try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-            File dir = Paths.get("E:/dump/sounds").toFile();
+            File dir = Paths.get("E:/dump/226sounds").toFile();
             if (!dir.exists()) {
                 dir.mkdirs();
             }
@@ -50,8 +50,8 @@ public class SoundDumper {
                     data = bos.toByteArray();
                 }
 
-                try (FileOutputStream fos = new FileOutputStream(new File(dir, i + (wav ? ".wav" : ".gz")))) {
-                    fos.write(data);}
+                try (FileOutputStream fos = new FileOutputStream(new File(dir, i + (".gz")))) {
+                    fos.write(CompressionUtils.gzip(data));}
 
             } catch (Exception ex) {
                 System.out.println("error decoding sound: " + i);

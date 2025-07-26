@@ -175,6 +175,8 @@ public class MapImageDumper {
 			int baseX = region.getBaseX();
 			int baseY = region.getBaseY();
 			int drawBaseX = baseX - lowestX.getBaseX();
+			// to pixel Y. top most y is 0, but the top most
+			// region has the greatest y, so invert
 			int drawBaseY = highestY.getBaseY() - baseY;
 
 			for (int x = 0; x < 64; ++x)
@@ -337,7 +339,7 @@ public class MapImageDumper {
 			{
 				if (location.getPosition().getHeight() != 0)
 				{
-				//	continue;
+					continue;
 				}
 
 				ObjectType objType = TypeListManager.lookupObject(location.getId());

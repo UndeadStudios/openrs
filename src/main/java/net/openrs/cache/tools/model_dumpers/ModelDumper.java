@@ -49,7 +49,7 @@ public class ModelDumper {
 		try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
 			ReferenceTable table = cache.getReferenceTable(7);
 
-			for (int i = 55459; i < table.capacity(); i++) {
+			for (int i = 0; i < table.capacity(); i++) {
 				if (table.getEntry(i) == null)
 					continue;
 

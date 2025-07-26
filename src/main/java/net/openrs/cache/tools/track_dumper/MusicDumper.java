@@ -14,7 +14,7 @@ import net.openrs.cache.util.CompressionUtils;
 public final class MusicDumper {
 
 	public static void main(String[] args) throws Exception {
-		File track1Dir = new File("E:/dump/music/");
+		File track1Dir = new File("E:/dump/index3/");
 
 		if (!track1Dir.exists()) {
 			track1Dir.mkdirs();

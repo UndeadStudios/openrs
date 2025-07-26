@@ -22,19 +22,19 @@ public class MapDumper317Format {
             dir.mkdirs();
         }
 
-        File mapDir = new File("E:/dump/index4/");
+        File mapDir = new File("E:/dump/614index4/");
 
         if (!mapDir.exists()) {
             mapDir.mkdirs();
         }
 
-        if (!XTEAManager.load(Paths.get("repository","xtea/txt").toFile())) {
+        if (!XTEAManager.load(Paths.get("repository","xtea/614txt").toFile())) {
             return;
         }
 
-        try(Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH)); RandomAccessFile raf = new RandomAccessFile(new File(dir,
+        try(Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH_four)); RandomAccessFile raf = new RandomAccessFile(new File(dir,
                 "map_index").toPath().toString(), "rw")) {
-            System.out.println("Generating map_index...");
+            //System.out.println("Generating map_index...");
 
             int total = 0;
             raf.seek(2L);
@@ -54,6 +54,7 @@ public class MapDumper317Format {
                         raf.writeShort(var17);
                         raf.writeShort(x);
                         raf.writeShort(y);
+                        System.out.println(var17+" - "+x+" - "+y+"");
                         total++;
                     }
                 }
@@ -64,9 +65,9 @@ public class MapDumper317Format {
             raf.writeShort(total);
             raf.seek(end);
             raf.close();
-            System.out.println("Done dumping map_index.");
+           // System.out.println("Done dumping map_index.");
 
-            for (int i = 0; i < MAX_REGION; i++) {
+           /* for (int i = 0; i < MAX_REGION; i++) {
                 int[] keys = XTEAManager.lookup(i);
                 int x = i >> 8 & 255;
                 int y = i & 0xFF;
@@ -109,7 +110,7 @@ public class MapDumper317Format {
                 System.out.println(String.format("%.2f%s", progress, "%"));
 
             }
-
+*/
             int totalCount = mapCount + landCount;
 
             System.out.println(String.format("Dumped %d map count %d land count %d total count", mapCount, landCount, totalCount));

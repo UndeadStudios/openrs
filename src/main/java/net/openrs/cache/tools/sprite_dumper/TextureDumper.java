@@ -53,10 +53,10 @@ public class TextureDumper {
 			directory.mkdirs();
 		}
 		int count = 0;
-		try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH))) {
-			ReferenceTable table = cache.getReferenceTable(CacheIndex.TEXTURES);
+		try (Cache cache = new Cache(FileStore.open(Constants.CACHE_PATH_four))) {
+			ReferenceTable table = cache.getReferenceTable(28);
 			ReferenceTable.Entry entry = table.getEntry(0);
-			Archive archive = Archive.decode(cache.read(CacheIndex.TEXTURES, 0).getData(), entry.size());
+			Archive archive = Archive.decode(cache.read(28, 0).getData(), entry.size());
 
 			int[] ids = new int[entry.capacity()];
 			colors = new int[entry.capacity()];

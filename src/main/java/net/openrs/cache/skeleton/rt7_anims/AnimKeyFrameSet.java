@@ -9,70 +9,81 @@ import net.openrs.util.ByteBufferUtils;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AnimKeyFrameSet {
    boolean modifies_trans;
    AnimationKeyFrame[][] skeletal_transforms = null;
-   public int frameset_id;// same as keyframe_id prob
+   public int frameset_id;
    int keyframe_id = 0;
    public AnimationKeyFrame[][] transforms = null;
    public Skin base;
-
 
    public static AnimKeyFrameSet[] keyframesetset;
    private int frame_size;
    private int rtog;
    private int rtog2;
    private int var4;
+   public static Map<Integer, AnimKeyFrameSet> keyframesetMap = new HashMap<>();
+
+   public static void register(int groupId, AnimKeyFrameSet set) {
+      keyframesetMap.put(groupId, set);
+   }
+
+   public static AnimKeyFrameSet get(int groupId) {
+      return keyframesetMap.get(groupId);
+   }
+
+   public static boolean contains(int groupId) {
+      return keyframesetMap.containsKey(groupId);
+   }
+
+   public static void clear() {
+      keyframesetMap.clear();
+   }
 
    public AnimKeyFrameSet() {}
 
    public static AnimKeyFrameSet init() {
-      keyframesetset = new AnimKeyFrameSet[5500];
       return null;
    }
+
    public static SkeletalAnimBase load(int group, ByteBuffer keyframeBuffer) {
       try {
-
-         // Read base size and extract base data
          int baseSize = keyframeBuffer.getInt();
-
          byte[] baseData = new byte[baseSize];
          keyframeBuffer.get(baseData, 0, baseSize);
          ByteBuffer baseBuffer = ByteBuffer.wrap(baseData);
 
-         // Read remaining information from keyframe buffer
-         int unusedByte = keyframeBuffer.get() & 0xFF; // Ensure you understand the purpose of this byte
+         int unusedByte = keyframeBuffer.get() & 0xFF;
          int version = keyframeBuffer.get() & 0xFF;
          int baseId = keyframeBuffer.getShort() & 0xFFFF;
 
          System.out.println("Loading keyframe set " + group + ", base_id: " + baseId + ", version: " + version);
 
-         // Initialize keyframe set
-         AnimKeyFrameSet keyframeSet = keyframesetset[group] = new AnimKeyFrameSet();
+         AnimKeyFrameSet keyframeSet = new AnimKeyFrameSet();
          keyframeSet.frameset_id = group;
 
-         // Decode the base
          try {
-            keyframeSet.base = Skin.decode(baseBuffer, false, baseSize);
+            keyframeSet.base = Skin.decode(baseBuffer, true, baseSize);
          } catch (RuntimeException e) {
-            keyframesetset[group] = null;
+            keyframesetMap.remove(group);
             System.err.println("Error decoding base for keyframe set: " + group);
             e.printStackTrace();
             return null;
          }
 
-         // Decode keyframes
          try {
             keyframeSet.decode(keyframeBuffer, version);
+            register(group, keyframeSet);
          } catch (RuntimeException e) {
-            keyframesetset[group] = null;
+            keyframesetMap.remove(group);
             System.err.println("Error decoding keyframes for group: " + group + ". File size: " + keyframeBuffer);
             e.printStackTrace();
             return null;
          }
 
-         // Return the resulting Skeleton object
          return keyframeSet.base.get_skeletal_animbase();
 
       } catch (Exception e) {
@@ -83,64 +94,55 @@ public class AnimKeyFrameSet {
    }
 
    public void encode(DataOutputStream dos) throws IOException {
-      // Write the frame set ID
+
       dos.writeInt(frameset_id);
-
-      // Write the keyframe ID
       dos.writeInt(keyframe_id);
-
-      // Write the modifies_trans flag
       dos.writeBoolean(modifies_trans);
 
-      // Write the count of transforms
       if (transforms != null) {
          dos.writeInt(transforms.length);
-
-         // Write details of each transform
          for (AnimationKeyFrame[] transformGroup : transforms) {
             if (transformGroup != null) {
-               dos.writeInt(transformGroup.length); // Number of frames in this transform group
+               dos.writeInt(transformGroup.length);
                for (AnimationKeyFrame frame : transformGroup) {
                   if (frame != null) {
-                     frame.encode(dos); // Assuming AnimationKeyFrame has an encode method
+                     frame.encode(dos);
                   } else {
-                     dos.writeInt(0); // No frame data
+                     dos.writeInt(0);
                   }
                }
             } else {
-               dos.writeInt(0); // No transforms in this group
+               dos.writeInt(0);
             }
          }
       } else {
-         dos.writeInt(0); // No transforms at all
+         dos.writeInt(0);
       }
 
-      // Write the base skin if exists
       if (base != null) {
          dos.writeBoolean(true);
-         base.encode(dos, false); // Assuming Skin has an encode method that accepts a DataOutputStream and a boolean for 'highrev'
+         base.encode(dos, false);
       } else {
          dos.writeBoolean(false);
       }
    }
 
-   public  void decode(ByteBuffer packet, int version) {
-       frame_size = packet.getInt();
+   public void decode(ByteBuffer packet, int version) {
+      frame_size = packet.get() & 0xFF;
       int before_read = packet.position();
-       rtog = packet.getShort() & 0xFFFF;//starttick
-       rtog2 = packet.getShort() & 0xFFFF;
-      this.keyframe_id = packet.get() & 0xFF;//keyframe
-       var4 = packet.getShort() & 0xFFFF;
+      rtog = packet.getShort() & 0xFFFF;
+      rtog2 = packet.getShort() & 0xFFFF;
+      this.keyframe_id = packet.get() & 0xFF;
+      var4 = packet.getShort() & 0xFFFF;
+
       this.skeletal_transforms = new AnimationKeyFrame[this.base.get_skeletal_animbase().bones.length][];
       this.transforms = new AnimationKeyFrame[this.base.transforms_count()][];
 
-      for(int var5 = 0; var5 < var4; ++var5) {
+      for (int var5 = 0; var5 < var4; ++var5) {
          int var7 = packet.get() & 0xFF;
          AnimTransform[] var8 = new AnimTransform[]{AnimTransform.NULL, AnimTransform.VERTEX, AnimTransform.field1210, AnimTransform.COLOUR, AnimTransform.TRANSPARENCY, AnimTransform.field1213};
-         AnimTransform var9 = (AnimTransform) SerialEnum.for_id((SerialEnum[]) var8, var7);
-         if (var9 == null) {
-            var9 = AnimTransform.NULL;
-         }
+         AnimTransform var9 = (AnimTransform) SerialEnum.for_id(var8, var7);
+         if (var9 == null) var9 = AnimTransform.NULL;
 
          int var14 = ByteBufferUtils.get_short(packet);
          AnimationChannel var10 = AnimationChannel.lookup_by_id(packet.get() & 0xFF);
@@ -148,6 +150,7 @@ public class AnimKeyFrameSet {
          var11.deserialise(packet, version);
          int count = var9.get_dimensions();
          AnimationKeyFrame[][] transforms;
+
          if (AnimTransform.VERTEX == var9) {
             transforms = this.skeletal_transforms;
          } else {
@@ -159,95 +162,24 @@ public class AnimKeyFrameSet {
          }
 
          transforms[var14][var10.get_component()] = var11;
-         if (AnimTransform.TRANSPARENCY == var9) {
-            this.modifies_trans = true;
-         }
+         if (AnimTransform.TRANSPARENCY == var9) this.modifies_trans = true;
       }
+
       int read_size = packet.position() - before_read;
-
-      if(read_size != frame_size) {
+      if (read_size != frame_size) {
          throw new RuntimeException("AnimKeyFrameSet size mismatch! keyframe " + keyframe_id + ", frame size: " + frame_size + ", actual read: " + read_size);
-
       }
-
    }
 
    public int get_keyframeid() {
       return this.keyframe_id;
    }
+
    public boolean ghas_keyframeid() {
       return this.keyframe_id != 0;
    }
+
    public boolean modifies_alpha() {
       return this.modifies_trans;
    }
-
-
-   public void encode(DataOutputStream dos, int version) throws IOException {
-      // Write the frame size
-      dos.writeInt(frame_size);
-
-      // Write the rtog and rtog2 values (e.g., start tick and end tick)
-      dos.writeShort(rtog);
-      dos.writeShort(rtog2);
-
-      // Write the keyframe ID
-      dos.writeByte(keyframe_id);
-
-      // Write the count of transformation groups (var4)
-      dos.writeShort(var4);
-
-      // Encode skeletal transforms
-      if (skeletal_transforms != null) {
-         dos.writeBoolean(true);
-         dos.writeInt(skeletal_transforms.length);
-         for (AnimationKeyFrame[] transformGroup : skeletal_transforms) {
-            if (transformGroup != null) {
-               dos.writeInt(transformGroup.length);
-               for (AnimationKeyFrame keyFrame : transformGroup) {
-                  if (keyFrame != null) {
-                     keyFrame.encode(dos); // Assuming AnimationKeyFrame has its own encode method
-                  } else {
-                     dos.writeBoolean(false); // Indicate no frame present
-                  }
-               }
-            } else {
-               dos.writeInt(0); // No transforms in this group
-            }
-         }
-      } else {
-         dos.writeBoolean(false); // No skeletal transforms
-      }
-
-      // Encode non-skeletal transforms
-      if (transforms != null) {
-         dos.writeBoolean(true);
-         dos.writeInt(transforms.length);
-         for (AnimationKeyFrame[] transformGroup : transforms) {
-            if (transformGroup != null) {
-               dos.writeInt(transformGroup.length);
-               for (AnimationKeyFrame keyFrame : transformGroup) {
-                  if (keyFrame != null) {
-                     keyFrame.encode(dos); // Assuming AnimationKeyFrame has its own encode method
-                  } else {
-                     dos.writeBoolean(false); // Indicate no frame present
-                  }
-               }
-            } else {
-               dos.writeInt(0); // No transforms in this group
-            }
-         }
-      } else {
-         dos.writeBoolean(false); // No transforms
-      }
-
-      // Encode the base (Skin) if present
-      if (base != null) {
-         dos.writeBoolean(true);
-         base.encode(dos, false); // Assuming Skin has an encode method
-      } else {
-         dos.writeBoolean(false);
-      }
-   }
-
 }

@@ -44,7 +44,10 @@ public enum CacheIndex {
 	FONTS(13),
 	VORBIS(14),
 	INSTRUMENTS(15),
-	WORLDMAP(16);
+	WORLDMAP_GEOGRAPHY(18),
+	WORLDMAP(19),
+	WORLDMAP_GROUND(20),
+	DBTABLEINDEX(21);
 
 	private final int id;
 

@@ -6,14 +6,14 @@ import java.io.IOException
 import java.nio.ByteBuffer
 
 class TextureType (private val id: Int) : Type {
-    var fileIds: IntArray = IntArray(0)
-    var field2293: Boolean = false
-    var field2301: IntArray = IntArray(0)
-    var field2296: IntArray = IntArray(0)
-    var field2295: IntArray = IntArray(0)
-    var animationSpeed : Int = 0
-    var animationDirection : Int = 0
-    var averageRGB: Int = -1
+     var fileIds: IntArray = IntArray(0)
+     var field2293: Boolean = false
+     var field2301: IntArray = IntArray(0)
+     var field2296: IntArray = IntArray(0)
+      var field2295: IntArray = IntArray(0)
+     var animationSpeed : Int = 0
+     var animationDirection : Int = 0
+      var averageRGB: Int = -1
     override fun decode(buffer: ByteBuffer) {
         averageRGB = buffer.getShort().toInt() and 0xFFFF;
         field2293 = buffer.get().toInt() and 0xFF == 1
@@ -48,6 +48,7 @@ class TextureType (private val id: Int) : Type {
     }
     @Throws(IOException::class)
     override fun encode(dos: DataOutputStream) {
+
         dos.writeByte(1)
         dos.writeShort(id)
 
@@ -63,6 +64,9 @@ class TextureType (private val id: Int) : Type {
 
         if (!fileIds.contentEquals(IntArray(0))) {
             dos.writeByte(4)
+            repeat(fileIds.count()) {
+                dos.writeShort(fileIds[it])
+            }
         }
 
         if (!field2301.contentEquals(IntArray(0))) {

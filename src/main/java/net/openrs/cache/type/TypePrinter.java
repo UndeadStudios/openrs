@@ -78,6 +78,7 @@ public class TypePrinter {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
 		}
 	}
 
@@ -153,9 +154,45 @@ public class TypePrinter {
 			} else {
 				return null;
 			}
-		} else if (type == Object[].class) {
-			return Arrays.toString((Object[]) field.get(instance));
+		} else if (type.isArray()) {
+			Object[] array = (Object[]) field.get(instance);
+			if (array == null) return "null";
+
+			Class<?> component = type.getComponentType();
+
+			if (component.getSimpleName().equals("Sound")) {
+				StringBuilder sb = new StringBuilder("new Sound[] { ");
+				for (int i = 0; i < array.length; i++) {
+					Object sound = array[i];
+					if (sound == null) {
+						sb.append("null");
+					} else {
+						try {
+							int id = (int) sound.getClass().getField("id").get(sound);
+							int loops = (int) sound.getClass().getField("loops").get(sound);
+							int location = (int) sound.getClass().getField("location").get(sound);
+							int retain = (int) sound.getClass().getField("retain").get(sound);
+							sb.append("new Sound(")
+									.append(id).append(", ")
+									.append(loops).append(", ")
+									.append(location).append(", ")
+									.append(retain).append(")");
+						} catch (Exception e) {
+							sb.append("null");
+						}
+					}
+
+					if (i < array.length - 1) sb.append(", ");
+				}
+				sb.append(" }");
+				return sb.toString();
+			}
+
+			// fallback for unknown object arrays
+			return Arrays.toString(array);
 		}
+
+
 		return field.get(instance);
 	}
 

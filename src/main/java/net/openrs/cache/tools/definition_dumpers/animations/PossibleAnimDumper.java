@@ -18,7 +18,7 @@ import com.google.gson.stream.JsonWriter;
 
 public class PossibleAnimDumper {
 	
-	public static final String EXPORT = "E:/dump/PossibleanimsNoHumanoid224.json";
+	public static final String EXPORT = "E:/dump/PossibleanimsNoHumanoid227.json";
 	
 	public static final String LISTFILE = "E:/dump/types/sequences.txt";
 	public static final String NPCFILE = "E:/dump/types/npcs.txt";
@@ -44,6 +44,7 @@ public class PossibleAnimDumper {
 		int secondLastFrameLength = -1;
 		int forcedPriority = -1;
 		ArrayList<Integer> frameIds = new ArrayList<Integer>();
+		int skeletalId = -1; // New field for skeletal ID
 	}
 	
 	static class Npc {
@@ -78,27 +79,32 @@ public class PossibleAnimDumper {
 			    	line = line.replace("case ", "");
 			    	line = line.replace(":", "");
 			    	anim.id = Integer.parseInt(line);
-			    } else if(line.contains("type.frameLengths")) {
-			    	line = line.replace("type.frameLengths = new int[] {", "");
-			    	line = line.replace("};", "");
-			    	String[] frameLengths = line.split(",");
-			    	if(frameLengths.length >= 2) {
-				    	anim.lastFrameLength = Integer.parseInt(frameLengths[frameLengths.length - 1].trim());
-				    	anim.secondLastFrameLength = Integer.parseInt(frameLengths[frameLengths.length - 2].trim());
-			    	}
-			    } else if(line.contains("type.frameIDs")) {
-			    	line = line.replace("type.frameIDs = new int[] {", "");
-			    	line = line.replace("};", "");
-			    	String[] frameIds = line.split(",");
-			    	for (String frame : frameIds) {
+				} else if (line.contains("type.frameLengths")) {
+					line = line.replace("type.frameLengths = new int[] {", "").replace("};", "").trim();
+					if (!line.isEmpty()) {
+						String[] frameLengths = line.split(",");
+						if (frameLengths.length >= 2) {
+							anim.lastFrameLength = Integer.parseInt(frameLengths[frameLengths.length - 1].trim());
+							anim.secondLastFrameLength = Integer.parseInt(frameLengths[frameLengths.length - 2].trim());
+						}
+					}
+				} else if (line.contains("type.frameIDs")) {
+					line = line.replace("type.frameIDs = new int[] {", "").replace("};", "").trim();
+					if (!line.isEmpty()) {
+						String[] frameIds = line.split(",");
+						for (String frame : frameIds) {
 							anim.frameIds.add(Integer.parseInt(frame.trim()));
-			    	}
-			    } else if(line.contains("type.forcedPriority") || line.contains("type.priority")) {
+						}
+					}
+				} else if(line.contains("type.forcedPriority") || line.contains("type.priority")) {
 			    	line = line.replace("type.priority = ", "");
 			    	line = line.replace("type.forcedPriority = ", "");
 			    	line = line.replace(";", "");
 			    	anim.forcedPriority = Integer.parseInt(line.trim());
-			    } else if(line.contains("break")) {
+			    } else if (line.contains("type.skeletalId")) {
+				line = line.replace("type.skeletalId = ", "").replace(";", "").trim();
+				anim.skeletalId = Integer.parseInt(line);
+			} else if(line.contains("break")) {
 			    	anims.put(anim.id, anim);
 			    }
 			}

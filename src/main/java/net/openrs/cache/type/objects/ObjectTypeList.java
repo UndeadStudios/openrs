@@ -27,6 +27,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +44,7 @@ import net.openrs.cache.type.CacheIndex;
 import net.openrs.cache.type.ConfigArchive;
 import net.openrs.cache.type.TypeList;
 import net.openrs.cache.type.TypePrinter;
+import net.openrs.cache.type.sequences.SequenceType;
 import net.openrs.util.Preconditions;
 
 /**
@@ -60,30 +63,55 @@ public class ObjectTypeList implements TypeList<ObjectType> {
 	@Override
 	public void initialize(Cache cache) {
 		int count = 0;
-		try {
-			ReferenceTable table = cache.getReferenceTable(CacheIndex.CONFIGS);
-			Entry entry = table.getEntry(ConfigArchive.OBJECT);
-			Archive archive = Archive.decode(cache.read(CacheIndex.CONFIGS, ConfigArchive.OBJECT).getData(),
-					entry.size());
+		int maxGlobalId = 0;
 
-			objs = new ObjectType[entry.capacity()];
-			for (int id = 0; id < entry.capacity(); id++) {
-				ChildEntry child = entry.getEntry(id);
-				if (child == null)
-					continue;
+		ReferenceTable table = cache.getReferenceTable(19); // Index 20 = Sequences
+		Map<Integer, ObjectType> sequenceMap = new HashMap<>();
+
+		for (int archiveId = 0; archiveId < table.size(); archiveId++) {
+			Entry entry = table.getEntry(archiveId);
+			if (entry == null) continue;
+
+			Container container;
+			try {
+				container = cache.read(19, archiveId);
+			} catch (Exception e) {
+				continue;
+			}
+
+			Archive archive;
+			archive = Archive.decode(container.getData(), entry.size());
+			objs = new ObjectType[maxGlobalId + 1];
+			for (int childId = 0; childId < entry.capacity(); childId++) {
+				ChildEntry child = entry.getEntry(childId);
+				if (child == null) continue;
 
 				ByteBuffer buffer = archive.getEntry(child.index());
-				ObjectType type = new ObjectType(id);
-				type.decode(buffer);
-				switch(id){
+				if (buffer == null) continue;
+
+				try {
+					int globalId = (archiveId << 8) | childId;
+					ObjectType type = new ObjectType(globalId);
+					type.decode(buffer);
+					sequenceMap.put(globalId, type);
+
+					if (maxGlobalId < globalId) {
+						maxGlobalId = globalId;
+					}
+
+
+					count++;
+				} catch (Exception e) {
+					System.err.println("⚠️ Failed to decode ObjectType " + archiveId + ":" + childId);
 				}
-				objs[id] = type;
-				count++;
 			}
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, "Error Loading ObjectType(s)!", e);
 		}
-		logger.info("Loaded " + count + " ObjectType(s)!");
+		// Allocate exact array size based on highest global ID
+		objs = new ObjectType[maxGlobalId + 1];
+		for (Map.Entry<Integer, ObjectType> entry : sequenceMap.entrySet()) {
+			objs[entry.getKey()] = entry.getValue();
+		}
+		logger.info("✅ Loaded " + count + " SequenceType(s), max global ID = " + maxGlobalId + "!");
 	}
 
 	@Override

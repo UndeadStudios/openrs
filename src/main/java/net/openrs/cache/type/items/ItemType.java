@@ -98,7 +98,7 @@ public class ItemType implements Type {
 	private int opcode94;
 	private String opcode9 = "null";
 	private String description = "null";
-
+	public String[][] subOps;
 	public ItemType(int id) {
 		this.id = id;
 	}
@@ -187,6 +187,29 @@ public class ItemType implements Type {
 					}
 				} else if (opcode == 42) {
 					this.shiftClickIndex = buffer.get();
+				} else if (opcode == 43) {
+					var3 = buffer.get();
+					if (this.subOps == null) {
+						this.subOps = new String[5][];
+					}
+
+					boolean var7 = var3 >= 0 && var3 < 5;
+					if (var7 && this.subOps[var3] == null) {
+						this.subOps[var3] = new String[20];
+					}
+
+					while (true) {
+						int var5 = buffer.get() - 1;
+						if (var5 == -1) {
+							break;
+						}
+
+						String var6 = ByteBufferUtils.emcodeStringCp1252(buffer);
+						if (var7 && var5 >= 0 && var5 < 20) {
+							this.subOps[var3][var5] = var6;
+						}
+					}
+
 				} else if (opcode == 65) {
 					this.searchable = true;
 				} else if(opcode == 75) {
@@ -400,6 +423,22 @@ public class ItemType implements Type {
 		if (shiftClickIndex != -2) {
 			dos.writeByte(42);
 			dos.writeByte(shiftClickIndex);
+		}
+		if (subOps != null) {
+			for (int var3 = 0; var3 < subOps.length; var3++) {
+				if (subOps[var3] != null) {
+					dos.writeByte(43); // Opcode for this section
+					dos.writeByte(var3); // Writing var3 (the sub-array index)
+
+					for (int var5 = 0; var5 < subOps[var3].length; var5++) {
+						if (subOps[var3][var5] != null) {
+							dos.writeByte(var5 + 1); // Index offset (so -1 signals end)
+							dos.writeUTF(subOps[var3][var5]); // Writing the actual string
+						}
+					}
+					dos.writeByte(0); // End of list marker (because reading logic uses get() - 1)
+				}
+			}
 		}
 
 		if (searchable) {
